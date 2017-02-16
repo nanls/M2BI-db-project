@@ -5,6 +5,11 @@ class Config(object):
     DEBUG = False
     TESTING = False
 
+    #-----
+    # configuration of Flask-Uploads
+    TOP_LEVEL_DIR = '.'
+    UPLOADED_PDB_DEST = TOP_LEVEL_DIR + '/up'
+
 class ProductionConfig(Config):
     pass
 
