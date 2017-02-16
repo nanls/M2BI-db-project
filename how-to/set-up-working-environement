@@ -1,0 +1,30 @@
+
+--- install python3
+
+--- install git 
+
+create an account on Gihut. Become a coworker on the project. 
+clone the repo : git clone <find-the-link-on-github>
+
+git lg 
+show branch in cmd invit
+
+--- install and set up virtual environnement : 
+pip install virtualenv
+cd my_project_folder
+virtualenv venv
+virtualenv -p /usr/bin/python3 venv
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source venv/bin/activate
+
+pip install -r app/requirements.txt
+
+(
+pip install requests
+pip freeze > app/requirements.txt
+)
+
+more info on : 
+http://docs.python-guide.org/en/latest/dev/virtualenvs/
+
+
