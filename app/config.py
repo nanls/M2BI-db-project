@@ -5,6 +5,11 @@ class Config(object):
     DEBUG = False
     TESTING = False
 
+    #-----
+    # configaration of Flask-SQLAlchemy
+    # which db :
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///data.db'
+
 class ProductionConfig(Config):
     pass
 
