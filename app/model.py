@@ -36,3 +36,40 @@ class PDBFile(db.Model):
         self.pdb_id = pdb_id
         self.seq = seq
         self.resolution = resolution
+
+        
+class Chain(db.Model):
+    """
+    Attributes :
+    -----------
+    chain_id : integer
+    pdb_id : 4-character string
+        the 4-character unique identifier of every entry in the Protein Data Bank
+    start : integer 
+        index of the first chain residue
+    stop : integer
+        index of the last chain residue (start < stop)
+    """
+    chain_id = db.Column(db.int, primary_key=True)
+    pdb_id = db.Column(db.String(4), foreign_key=True)
+    start = db.Column(db.int)
+    stop = db.Column(db.int)
+    
+    def __init__(self, chain_id, pdb_id, start, stop):
+        """
+        constructor of one Chain instance : Chain
+        Arguments :
+        ------------
+        chain_id : integer
+    pdb_id : 4-character string
+        the 4-character unique identifier of every entry in the Protein Data Bank
+    start : integer 
+        index of the first chain residue
+    stop : integer
+        index of the last chain residue 
+        (we assume that start < stop in the PDB file)
+    """
+    self.chain_id = chain_id
+    self.pdb_id = pdb_id
+    self.start = start
+    self.stop = stop
