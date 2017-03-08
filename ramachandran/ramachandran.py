@@ -20,7 +20,7 @@ import sys
 # FUNCTION
 ######################################
 
-def compute_phi_psi_angles(pdb_file, angle):
+def compute_phi_psi_angles(pdb_file, angle="degree"):
 	pdb = md.load_pdb(pdb_file)
 	phi_angles = md.compute_phi(pdb)
 	psi_angles = md.compute_psi(pdb)
@@ -39,7 +39,7 @@ def compute_phi_psi_angles(pdb_file, angle):
 	return phi_angles[0:-1], psi_angles[1:]
 
 
-def compute_ramachandran_map(angles, angle):
+def compute_ramachandran_map(angles, angle="degree"):
 	x = angles[0]
 	y = angles[1]
 	if angle == "degree":
