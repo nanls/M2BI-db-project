@@ -4,6 +4,9 @@ from argparse import ArgumentParser
 import os
 import os.path
 
+import Bio.PDB  
+
+
 
 def is_valid_file(parser, arg):
     """ Check if arg filename is readable
@@ -38,9 +41,14 @@ parser.add_argument("-l",
 )
 args = parser.parse_args()
 
+
+
+pdbl = Bio.PDB.PDBList()
+
 with args.filename as f : 
     next(f)
     for line in f : 
         pdb_id = line[:4]
         print (pdb_id) 
+        pdbl.retrieve_pdb_file(pdb_id)
         
