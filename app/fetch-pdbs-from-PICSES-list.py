@@ -41,4 +41,6 @@ args = parser.parse_args()
 with args.filename as f : 
     next(f)
     for line in f : 
-        print (line) 
+        pdb_id = line[:4]
+        print (pdb_id) 
+        
