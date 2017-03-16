@@ -39,5 +39,6 @@ parser.add_argument("-l",
 args = parser.parse_args()
 
 with args.filename as f : 
+    next(f)
     for line in f : 
         print (line) 
