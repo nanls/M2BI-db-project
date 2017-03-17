@@ -104,3 +104,38 @@ class Annotation(db.Model):
         self.pdb_id = pdb_id
         self.method = method
         self.result = result
+        
+class Angle(db.Model):
+    """
+    Attributes :
+    ------------
+    pdb_id : 4-character string
+        the 4-character unique identifier of every entry in the Protein Data Bank
+    atom_idx : int
+        index of atom following the numerotation of the pdb
+    phi : float
+        value of the phi angle
+    psi : float
+        value of the psi angle
+    """
+    pdb_id = db.Column(db.String(4), foreign_key=True)
+    atom_idx = db.Column(db.Integer)
+    phi = db.Column(db.Float)
+    psi = db.Column(db.Float)
+
+    def __init__(self, pdb_id, atom_idx, phi, psi):
+         """
+        constructor of one annotation instance : Annotation
+        Arguments :
+        ------------
+        pdb_id : 4-character string
+            the 4-character unique identifier of every entry in the Protein Data Bank
+        method : string
+            the method used to produce the annotation
+        result : string
+            the string of annotation
+        """
+        self.pdb_id = pdb_id
+        self.method = method
+        self.result = result
+
