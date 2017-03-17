@@ -37,6 +37,22 @@
               background-color: #222222; /*same as navbar*/
             }
             /******************************************************************/
+
+            /******************************************************************/
+            /*** Flashed messages : ***/
+            #flashes{
+                border: 1px solid black;
+            }
+            #flashes li {
+                padding: 0.5em;
+            }
+            #flashes li.succes {
+                color: green;
+            }
+            #flashes li.error {
+                color: red;
+            }
+            /******************************************************************/
         </style>
     {% endblock %}
     </head>
@@ -45,6 +61,15 @@
 
         <header>
         {% block header %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <ul id=flashes>
+                {% for category, message in messages %}
+                  <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
         {% endblock %}
         </header>
 
