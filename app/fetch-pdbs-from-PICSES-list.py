@@ -47,7 +47,7 @@ args = parser.parse_args()
 pdbl = Bio.PDB.PDBList()
 
 with args.filename as f :
-    next(f)
+    next(f) # Do not take header into account
     for line in f :
         pdb_id = line[:4]
         print (pdb_id)
