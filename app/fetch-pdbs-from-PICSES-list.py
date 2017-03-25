@@ -52,10 +52,14 @@ with args.filename as f :
         pdb_id = line[:4]
         print (pdb_id)
         try :
-            # try retrieving the file : 
+            # try retrieving the file the normal way : 
             pdbl.retrieve_pdb_file(pdb_id, pdir = 'data')
         except IOError:
-            # the file couldn't be fetched. obsolete ? :
-            print("the file couldn't be fetched. obsolete ?")
-             
+            try : 
+                # try retrieving the file as obsolete : 
+                pdbl.retrieve_pdb_file(pdb_id, pdir = 'data', obsolete = True)
+            except IOError:
+                # the file couldn't be fetched at all :
+                print("the file couldn't be fetched at all.")
+                 
 
