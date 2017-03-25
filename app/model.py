@@ -96,7 +96,7 @@ class Annotation(db.Model):
     """
     pdb_id = db.Column(db.String(4),  primary_key=True, db.ForeignKey('pdbfile.id'))
     method = db.Column(db.String, primary_key=True)
-    result = db.Column(db.String)
+    result = db.Column(db.Text)
     def __init__(self, pdb_id, method, result):
          """
         constructor of one annotation instance : Annotation
