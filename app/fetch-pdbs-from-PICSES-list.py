@@ -22,6 +22,8 @@ def is_valid_file(parser, arg):
     an open file handler
     """
 
+    #https://docs.python.org/3/library/os.html#os.access
+    # if it's a file and it's readable :
     if os.path.isfile(arg) and os.access(arg, os.R_OK):
         print("File {0} exists and is readable".format (arg) )
         return open(arg, 'r')  # return an open file handle
