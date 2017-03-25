@@ -23,6 +23,7 @@ class PDBFile(db.Model):
     
     chains = db.relationship('Chain', backref='pdb', lazy='dynamic')
     annotations = db.relationship('Annotation', backref='pdb', lazy='dynamic')
+    angles = db.relationship('Angle', backref='pdb', lazy='dynamic')
 
     def __init__(self, pdb_id, header, seq, resolution):
         """
@@ -125,8 +126,8 @@ class Angle(db.Model):
     psi : float
         value of the psi angle
     """
-    pdb_id = db.Column(db.String(4), foreign_key=True)
-    atom_idx = db.Column(db.Integer)
+    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.pdb_id'))
+    atom_idx = db.Column(db.Integer, primary_key=True)
     phi = db.Column(db.Float)
     psi = db.Column(db.Float)
 
