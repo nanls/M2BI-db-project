@@ -16,7 +16,7 @@ class PDBFile(db.Model):
     
     
     """
-    pdb_id = db.Column(db.String(4), primary_key=True)
+    id = db.Column(db.String(4), primary_key=True)
     header = db.Column(db.String)
     seq = db.Column(db.Text)
     resolution = db.Column(db.Float)
