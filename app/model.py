@@ -59,7 +59,7 @@ class Chain(db.Model):
         index of the last chain residue (start < stop)
     """
     id = db.Column(db.String(1), primary_key=True)
-    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.id'))
+    pdb_id = db.Column(db.String(4), db.ForeignKey('pdbfile.id'), primary_key=True,)
     start = db.Column(db.int)
     stop = db.Column(db.int)
     
@@ -94,7 +94,7 @@ class Annotation(db.Model):
     result : string
         the string of annotation
     """
-    pdb_id = db.Column(db.String(4),  primary_key=True, db.ForeignKey('pdbfile.id'))
+    pdb_id = db.Column(db.String(4), db.ForeignKey('pdbfile.id'), primary_key=True)
     method = db.Column(db.String, primary_key=True)
     result = db.Column(db.Text)
     def __init__(self, pdb_id, method, result):
@@ -126,7 +126,7 @@ class Angle(db.Model):
     psi : float
         value of the psi angle
     """
-    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.id'))
+    pdb_id = db.Column(db.String(4), db.ForeignKey('pdbfile.id'), primary_key=True)
     atom_idx = db.Column(db.Integer, primary_key=True)
     phi = db.Column(db.Float)
     psi = db.Column(db.Float)
