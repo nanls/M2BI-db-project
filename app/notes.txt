@@ -2,7 +2,7 @@ Pour lancer DSSPPII:
 
 	Avoir compilé DSSP
 		donc, dans DSSP/, faire: ./DsspCompileCC
-	Puis, modifier la ligne 40 de dssppII.pl pour mettre dans la variable my 
+	Puis, modifier la ligne 38 de dssppII.pl pour mettre dans la variable my 
 		$path_dssp le chemin absolu vers le programme dsspcmbi (contenu dans notre 
 		cas dans le dossier DSSP et qui est le programme qui vient d'être compilé).
 	Ce programme n'enregistre pas les résultats dans un fichier mais affiche 
