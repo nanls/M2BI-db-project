@@ -50,7 +50,7 @@ class Chain(db.Model):
     """
     Attributes :
     -----------
-    chain_id : 1-character string
+    id : 1-character string
     pdb_id : 4-character string
         the 4-character unique identifier of every entry in the Protein Data Bank
     start : integer 
@@ -58,17 +58,17 @@ class Chain(db.Model):
     stop : integer
         index of the last chain residue (start < stop)
     """
-    chain_id = db.Column(db.String(1), primary_key=True)
+    id = db.Column(db.String(1), primary_key=True)
     pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.id'))
     start = db.Column(db.int)
     stop = db.Column(db.int)
     
-    def __init__(self, chain_id, pdb_id, start, stop):
+    def __init__(self, id, pdb_id, start, stop):
         """
         constructor of one chain instance : Chain
         Arguments :
         ------------
-        chain_id : integer
+        id : integer
         pdb_id : 4-character string
             the 4-character unique identifier of every entry in the Protein Data Bank
         start : integer 
@@ -77,7 +77,7 @@ class Chain(db.Model):
             index of the last chain residue 
             (we assume that start < stop in the PDB file)
         """
-        self.chain_id = chain_id
+        self.id = id
         self.pdb_id = pdb_id
         self.start = start
         self.stop = stop
