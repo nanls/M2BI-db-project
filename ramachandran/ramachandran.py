@@ -53,6 +53,10 @@ def compute_phi_psi_angles(pdb_file, angle="degree"):
     """Method to compute phi and psi angles of a pdb file in an given
         angle (radian or degree).
 
+    Arguments:
+        pdb_file: path of the pdb file
+        angle: type of degree for phi and psi angles (degree or radian)
+
     Returns:
         phi_angles (numpy.ndarray): array which contains all phi angles
         (numpy.float32).
@@ -82,6 +86,15 @@ def compute_phi_psi_angles(pdb_file, angle="degree"):
 def compute_ramachandran_map(angles, angle="degree"):
     """Method to generate a ramachandran map with a given angle scale
         (radian or degree).
+
+        Arguments:
+            angles: tuple which contains
+            phi_angles (numpy.ndarray): array which contains all phi angles
+            (numpy.float32).
+            psi_angles (numpy.ndarray): array which contains all psi angles
+            (numpy.float32).
+            angle: type of degree for phi and psi angles (degree or radian)
+
     """
     x = angles[0]
     y = angles[1]
@@ -135,6 +148,6 @@ def compute_ramachandran_map(angles, angle="degree"):
 ######################################
 # Main()
 ######################################
-
-angles = compute_phi_psi_angles("./1a1yIH", "degree")
-compute_ramachandran_map(angles, "degree")
+if __name__ == "__main__":
+    angles = compute_phi_psi_angles("./1a1yIH", "degree")
+    compute_ramachandran_map(angles, "degree")
