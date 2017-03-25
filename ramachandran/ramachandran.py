@@ -144,10 +144,9 @@ def compute_ramachandran_map(angles, angle="degree"):
     # Saves figures
     fig.savefig('rama.png', dpi=300)
 
-
-######################################
-# Main()
-######################################
+  
 if __name__ == "__main__":
     angles = compute_phi_psi_angles("./1a1yIH", "degree")
     compute_ramachandran_map(angles, "degree")
+
+   
