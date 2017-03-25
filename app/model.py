@@ -7,7 +7,7 @@ class PDBFile(db.Model):
     """
     Attributes :
     -----------
-    pdb_id : 4-character string, primary key
+    id : 4-character string, primary key
         the 4-character unique identifier of every entry in the Protein Data Bank
     header : varchar
     seq : text
@@ -25,13 +25,13 @@ class PDBFile(db.Model):
     annotations = db.relationship('Annotation', backref='pdb', lazy='dynamic')
     angles = db.relationship('Angle', backref='pdb', lazy='dynamic')
 
-    def __init__(self, pdb_id, header, seq, resolution):
+    def __init__(self, id, header, seq, resolution):
         """
         constructor of one pdb file : PDBFile
 
         Arguments :
         ------------
-        pdb_id : 4-character string
+        id : 4-character string
             the 4-character unique identifier of every entry in the Protein Data Bank
         header : string
         seq : text
@@ -40,7 +40,7 @@ class PDBFile(db.Model):
             a measure of the quality of the data that has been collected on
             the crystal containing the protein or nucleic acid
         """
-        self.pdb_id = pdb_id
+        self.id = id
         self.header = header
         self.seq = seq
         self.resolution = resolution
@@ -59,7 +59,7 @@ class Chain(db.Model):
         index of the last chain residue (start < stop)
     """
     chain_id = db.Column(db.String(1), primary_key=True)
-    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.pdb_id'))
+    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.id'))
     start = db.Column(db.int)
     stop = db.Column(db.int)
     
@@ -94,7 +94,7 @@ class Annotation(db.Model):
     result : string
         the string of annotation
     """
-    pdb_id = db.Column(db.String(4),  primary_key=True, db.ForeignKey('pdbfile.pdb_id'))
+    pdb_id = db.Column(db.String(4),  primary_key=True, db.ForeignKey('pdbfile.id'))
     method = db.Column(db.String, primary_key=True)
     result = db.Column(db.String)
     def __init__(self, pdb_id, method, result):
@@ -126,7 +126,7 @@ class Angle(db.Model):
     psi : float
         value of the psi angle
     """
-    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.pdb_id'))
+    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.id'))
     atom_idx = db.Column(db.Integer, primary_key=True)
     phi = db.Column(db.Float)
     psi = db.Column(db.Float)
