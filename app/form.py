@@ -24,4 +24,4 @@ class UploadForm(FlaskForm):
     
     submit = SubmitField('Upload file', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
-    
+    angle_unit = RadioField('Angle units', choices=[('degree','degree (default)'),('radian','radian')])
