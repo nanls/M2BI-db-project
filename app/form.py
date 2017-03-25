@@ -14,14 +14,14 @@ import app
 
 class UploadForm(FlaskForm):
     """
-    Form for image upload.
+    Form for pdb upload.
     """
-    pdb_file = FileField('Sample image file', validators=[
+    pdb_file = FileField('PDB file', validators=[
         FileRequired(),
-        FileAllowed( app.pdb_set, 'Images only!')
+        FileAllowed( app.pdb_set, '.pdb and .ent only!')
     ])
     
     
-    submit = SubmitField('Upload blood smear', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
+    submit = SubmitField('Upload file', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
     
