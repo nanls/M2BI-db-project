@@ -142,11 +142,12 @@ def compute_ramachandran_map(angles, unit="degree"):
     # Changes figure size
     fig.set_size_inches(10.0, 10.0)
     # Saves figures
-    fig.savefig('rama.png', dpi=300)
+    fig.savefig('temp/rama.png', dpi=300)
 
   
 if __name__ == "__main__":
-    angles = compute_phi_psi_angles("./1a1yIH", "degree")
+    angles = compute_phi_psi_angles("../ramachandran/1kxy.pdb", "degree")
+    print angles
     compute_ramachandran_map(angles, "degree")
 
    
