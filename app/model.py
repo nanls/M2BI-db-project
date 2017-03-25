@@ -22,6 +22,7 @@ class PDBFile(db.Model):
     resolution = db.Column(db.Float)
     
     chains = db.relationship('Chain', backref='pdb', lazy='dynamic')
+    annotations = db.relationship('Annotation', backref='pdb', lazy='dynamic')
 
     def __init__(self, pdb_id, header, seq, resolution):
         """
@@ -92,8 +93,8 @@ class Annotation(db.Model):
     result : string
         the string of annotation
     """
-    pdb_id = db.Column(db.String(4), foreign_key=True)
-    method = db.Column(db.String, foreign_key=True)
+    pdb_id = db.Column(db.String(4),  primary_key=True, db.ForeignKey('pdbfile.pdb_id'))
+    method = db.Column(db.String, primary_key=True)
     result = db.Column(db.String)
     def __init__(self, pdb_id, method, result):
          """
