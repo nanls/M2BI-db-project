@@ -51,5 +51,11 @@ with args.filename as f :
     for line in f :
         pdb_id = line[:4]
         print (pdb_id)
-        pdbl.retrieve_pdb_file(pdb_id, pdir = 'data', obsolete=True)
+        try :
+            # try retrieving the file, even if it's obsolete : 
+            pdbl.retrieve_pdb_file(pdb_id, pdir = 'data', obsolete=True)
+        except IOError:
+            # the file couldn't be found at all :
+            print("The file couldn't be found at all")
+             
 
