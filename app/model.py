@@ -60,8 +60,8 @@ class Chain(db.Model):
     """
     id = db.Column(db.String(1), primary_key=True)
     pdb_id = db.Column(db.String(4), db.ForeignKey('pdbfile.id'), primary_key=True,)
-    start = db.Column(db.int)
-    stop = db.Column(db.int)
+    start = db.Column(db.Integer())
+    stop = db.Column(db.Integer())
     
     def __init__(self, id, pdb_id, start, stop):
         """
