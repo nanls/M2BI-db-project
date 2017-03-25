@@ -98,7 +98,7 @@ class Annotation(db.Model):
     method = db.Column(db.String, primary_key=True)
     result = db.Column(db.Text)
     def __init__(self, pdb_id, method, result):
-         """
+        """
         constructor of one annotation instance : Annotation
         Arguments :
         ------------
@@ -132,7 +132,7 @@ class Angle(db.Model):
     psi = db.Column(db.Float)
 
     def __init__(self, pdb_id, atom_idx, phi, psi):
-         """
+        """
         constructor of one annotation instance : Annotation
         Arguments :
         ------------
