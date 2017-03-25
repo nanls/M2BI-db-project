@@ -1,0 +1,18 @@
+{% extends "skeleton.html" %}
+
+{% block title %}PDB upload{% endblock %}
+
+
+{% block content %}
+
+    {% if form.errors %}
+        <p class="error"><strong>Unable to upload pdb. See error messages below.</strong>
+    {% endif %}
+
+    {% from "_formhelpers.html" import render_field %}
+    <form method="POST" onsubmit="" action="{{url_for('upload')}}"  enctype="multipart/form-data">
+        {{ render_field(form.pdb_file) }}
+    </form>
+    
+
+{% endblock %}
