@@ -6,7 +6,7 @@ They have several fields defined, and a CSRF token hidden field that is created
 automatically.
 """
 from flask_wtf import FlaskForm
-from wtforms.fields import SubmitField
+from wtforms.fields import SubmitField, RadioField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 import app
@@ -24,4 +24,4 @@ class UploadForm(FlaskForm):
     
     submit = SubmitField('Upload file', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
-    
+    angle_unit = RadioField('Angle units', choices=[('degree','degree (default)'),('radian','radian')])

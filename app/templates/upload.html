@@ -12,6 +12,7 @@
     {% from "_formhelpers.html" import render_field %}
     <form method="POST" onsubmit="" action="{{url_for('upload')}}"  enctype="multipart/form-data">
         {{ render_field(form.pdb_file) }}
+        {{ render_field(form.angle_unit) }}
         {{ render_field(form.submit) }}
         {{ form.hidden_tag() }}
     </form>
