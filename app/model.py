@@ -7,19 +7,21 @@ class PDBFile(db.Model):
     """
     Attributes :
     -----------
-    pdb_id : 4-character string
+    pdb_id : 4-character string, primary key
         the 4-character unique identifier of every entry in the Protein Data Bank
-    seq : string
+    header : varchar
+    seq : text
         the corresponding sequence using 1-letter AA code
     resolution : float
-        a measure of the quality of the data that has been collected on
-        the crystal containing the protein or nucleic acid
+    
+    
     """
     pdb_id = db.Column(db.String(4), primary_key=True)
+    header = db.Column(db.String)
     seq = db.Column(db.Text)
     resolution = db.Column(db.Float)
 
-    def __init__(self, pdb_id, seq, resolution):
+    def __init__(self, pdb_id, header, seq, resolution):
         """
         constructor of one pdb file : PDBFile
 
@@ -27,13 +29,15 @@ class PDBFile(db.Model):
         ------------
         pdb_id : 4-character string
             the 4-character unique identifier of every entry in the Protein Data Bank
-        seq : string
+        header : string
+        seq : text
             the corresponding sequence using 1-letter AA code
         resolution : float
             a measure of the quality of the data that has been collected on
             the crystal containing the protein or nucleic acid
         """
         self.pdb_id = pdb_id
+        self.header = header
         self.seq = seq
         self.resolution = resolution
 
@@ -42,7 +46,7 @@ class Chain(db.Model):
     """
     Attributes :
     -----------
-    chain_id : integer
+    chain_id : 1-character string
     pdb_id : 4-character string
         the 4-character unique identifier of every entry in the Protein Data Bank
     start : integer 
@@ -50,7 +54,7 @@ class Chain(db.Model):
     stop : integer
         index of the last chain residue (start < stop)
     """
-    chain_id = db.Column(db.int, primary_key=True)
+    chain_id = db.Column(db.String(1), primary_key=True)
     pdb_id = db.Column(db.String(4), foreign_key=True)
     start = db.Column(db.int)
     stop = db.Column(db.int)
@@ -88,7 +92,7 @@ class Annotation(db.Model):
     """
     pdb_id = db.Column(db.String(4), foreign_key=True)
     method = db.Column(db.String, foreign_key=True)
-    result = db.COlumn(db.String)
+    result = db.Column(db.String)
     def __init__(self, pdb_id, method, result):
          """
         constructor of one annotation instance : Annotation
