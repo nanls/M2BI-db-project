@@ -1,6 +1,6 @@
 import flask
 
-from app import app
+from app import app, pdb_set
 from form import UploadForm
 
 @app.route("/")
@@ -18,5 +18,13 @@ def upload():
     """
     form  = UploadForm()
     if form.validate_on_submit():
+        
+        filename = pdb_set.save(
+            storage = form.pdb_file.data, # The uploaded file to save
+        )
+        print (filename) 
+        path = pdb_set.path(filename)
+        print (path)
+        
         return "success"
     return flask.render_template('upload.html', form = form)
