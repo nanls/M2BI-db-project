@@ -20,6 +20,8 @@ class PDBFile(db.Model):
     header = db.Column(db.String)
     seq = db.Column(db.Text)
     resolution = db.Column(db.Float)
+    
+    chains = db.relationship('Chain', backref='pdb', lazy='dynamic')
 
     def __init__(self, pdb_id, header, seq, resolution):
         """
@@ -55,7 +57,7 @@ class Chain(db.Model):
         index of the last chain residue (start < stop)
     """
     chain_id = db.Column(db.String(1), primary_key=True)
-    pdb_id = db.Column(db.String(4), foreign_key=True)
+    pdb_id = db.Column(db.String(4), primary_key=True, db.ForeignKey('pdbfile.pdb_id'))
     start = db.Column(db.int)
     stop = db.Column(db.int)
     
