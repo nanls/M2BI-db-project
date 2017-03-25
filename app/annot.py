@@ -25,7 +25,7 @@ def dsspAnnot(pdb):
 			P: PPII
 			" ": coil
 	"""
-	os.system("perl DSSPPII/dssppII.pl "+pdb+" > temp.txt")
+	os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp.txt")
 	flag = 0
 	annot = ""
 	with open("temp.txt", "r") as filin:
@@ -54,8 +54,8 @@ def prossAnnot(pdb):
 		P: polyproline
 		-: coil
 	"""
-	os.system("./PROSS/PROSS.py "+pdb+" > "+pdb[:-4]+".pross")
-	os.system("./PROSS/extract_PROSS2SEQ2D.pl "+pdb[:-4]+".pross > temp.txt")
+	os.system("tools/PROSS/PROSS.py "+pdb+" > "+pdb[:-4]+".pross")
+	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl "+pdb[:-4]+".pross > temp.txt")
 	flag = 0
 	annot = ""
 	with open("temp.txt", "r") as filin:
