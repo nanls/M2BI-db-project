@@ -37,23 +37,32 @@ def upload():
     return flask.render_template('upload.html', form = form)
 
 
-@app.route('/search', methods = ['GET', 'POST'])
-def search():
-    """
-    Define the search route.
-    """
-    idForm = form.SearchByPDBidForm()
-    filesForm = form.SearchFilesForm()
-    keywdForm = form.SearchByKeyWD()
 
-    if idForm.validate_on_submit():
+@app.route('/search_by_pdb_id', methods = ['POST'])
+def search_by_pdb_id():
+    idForm = SearchByPDBidForm()
+    print (idForm)
+    print (idForm.errors)
+
+    if idForm.validate_on_submit() :
+        print ('OKKAYYYYYYYYYYYYYYYYYYYYYY')
         PDBid = idForm.PDBid.data
+        print (PDBid)
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid = PDBid.split("\n")
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
-    elif filesForm.validate_on_submit():
-        # Default values definitions
+        return 'success search_by_pdb_id'
+    return flask.redirect(flask.url_for("search"), code=302)
+
+@app.route('/search_files', methods = ['POST'])
+def search_files():
+    filesForm = SearchFilesForm()
+
+    if filesForm.validate_on_submit():
+        print (filesForm.resMin.data)
+
+         # Default values definitions
         resMin = 0.0
         resMax = 10000.0
         sizeMin = 15
@@ -69,8 +78,27 @@ def search():
             sizeMax = filesForm.sizeMin.data
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
-    elif keywdForm.validate_on_submit():
+
+        # l’interrogation" (pas encore créée)
+        return 'succes search_files'
+    return flask.redirect(flask.url_for("search"), code=302)
+
+@app.route('/search_by_kw', methods = ['POST'])
+def search_by_kw():
+    keywdForm = SearchByKeyWD()
+    if keywdForm.validate_on_submit():
         keywd = keywdForm.keywd.data
+        return 'success search_by_kw'
+    return flask.redirect(flask.url_for("search"), code=302)
+
+@app.route('/search', methods = ['GET'])
+def search():
+    """
+    Define the search route.
+    """
+    idForm = SearchByPDBidForm()
+    filesForm = SearchFilesForm()
+    keywdForm = SearchByKeyWD()
     return flask.render_template('search.html', SearchByPDBidForm = idForm, SearchFilesForm = filesForm, SearchByKeyWDForm = keywdForm)
 
 
