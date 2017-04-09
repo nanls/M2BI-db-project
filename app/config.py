@@ -6,12 +6,16 @@ class Config(object):
     TESTING = False
 
     #-----
-    # configaration of Flask-SQLAlchemy
+    # configuration of Flask-Uploads
+    TOP_LEVEL_DIR = '.'
+    UPLOADED_PDB_DEST = TOP_LEVEL_DIR + '/up'
+    
+    # configuration of Flask-SQLAlchemy
     # which db :
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data.db'
 
 class ProductionConfig(Config):
-    pass
+    pass #empty because this database will not be really in production on a server
 
 class DevelopmentConfig(Config):
     DEBUG = True
