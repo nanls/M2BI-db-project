@@ -146,8 +146,17 @@ def compute_ramachandran_map(angles, unit="degree"):
 
   
 if __name__ == "__main__":
-    angles = compute_phi_psi_angles("../ramachandran/1kxy.pdb", "degree")
-    print angles
-    compute_ramachandran_map(angles, "degree")
+    pdb_file = sys.argv[1]
+    angle_unit = sys.argv[2]
+    if angle_unit not in ["degree", "radian"]:
+        sys.exit("you need to specify for the angle unit 'degree'" +
+                 " or 'radian'\n")
+    try:
+        angles = compute_phi_psi_angles(pdb_file, angle_unit)
+        print angles
+        compute_ramachandran_map(angles, angle_unit)
+    except:
+        sys.exit("the specified file is not openable or not" +
+                 "a pdb file or just not specified\n")
 
    
