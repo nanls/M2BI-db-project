@@ -34,3 +34,12 @@ def upload():
         
         return "success"
     return flask.render_template('upload.html', form = form)
+
+
+@app.route("/about")
+def about():
+    """
+    Define the about route
+    """
+    nb_pdbs = model.PDBFile.query.count()
+    print(nb_pdbs)
