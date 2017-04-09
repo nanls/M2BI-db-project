@@ -26,17 +26,18 @@ def dsspAnnot(pdb):
 			P: PPII
 			" ": coil
 	"""
-	os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp.txt")
+	# example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
+	os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp/"+pdb[-8:-4]+".dssp")
 	flag = 0
 	annot = ""
-	with open("temp.txt", "r") as filin:
+	with open("temp/"+pdb[-8:-4]+".dssp", "r") as filin:
 		for line in filin:
 			if line[0:3] == "  #":
 				flag = 1
 			elif flag == 1:
 				annot += line[16]
 		print(annot)
-	os.system("rm temp.txt")
+	os.system("rm temp/"+pdb[-8:-4]+".dssp")
 	return(annot)
 
 
@@ -56,19 +57,21 @@ def prossAnnot(pdb):
 		P: polyproline
 		-: coil
 	"""
-	os.system("tools/PROSS/PROSS.py "+pdb+" > "+pdb[:-4]+".pross")
-	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl "+pdb[:-4]+".pross > temp.txt")
+	# example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
+	# .pross file is the PROSS.py output, .pross2 file is the extract_PROSSSEQ2D.pl output
+	os.system("tools/PROSS/PROSS.py "+pdb+" > temp/"+pdb[-8:-4]+".pross")
+	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/"+pdb[-8:-4]+".pross > temp/"+pdb[-8:-4]+".pross2")
 	flag = 0
 	annot = ""
-	with open("temp.txt", "r") as filin:
+	with open("temp/"+pdb[-8:-4]+".pross2", "r") as filin:
 		for line in filin:
 			if line[0] == ">" and line[-7:-1] == " pross":
 				flag = 1
 			elif flag == 1:
 				annot += line[:-1]
 		print(annot)
-	os.system("rm "+pdb[:-4]+".pross")
-	os.system("rm temp.txt")
+	os.system("rm temp/"+pdb[-8:-4]+".pross")
+	os.system("rm temp/"+pdb[-8:-4]+".pross2")
 	return(annot)
 
 
@@ -78,7 +81,7 @@ if __name__ == '__main__':
 	if len(sys.argv) != 2:
 		sys.exit("ERROR: one argument is needed (pdb file)")
 	s_file = sys.argv[1]
-	if s_file[-4:] != ".pdb":
+	if s_file[-4:] != ".pdb" or s_file[:-4] != ".ent":
 		sys.exit("ERROR: reference file must be a pdb file")
 
 	dssp = dsspAnnot(s_file)
