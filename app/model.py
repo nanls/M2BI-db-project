@@ -233,5 +233,6 @@ class Angle(db.Model):
             the string of annotation
         """
         self.pdb_id = pdb_id
-        self.method = method
-        self.result = result
+        self.atom_idx = atom_idx
+        self.phi = phi
+        self.psi = psi
