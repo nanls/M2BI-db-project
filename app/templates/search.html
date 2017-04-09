@@ -16,6 +16,7 @@
     <form name = "SearchByPDBidForm" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
         {{ render_field(SearchByPDBidForm.PDBid) }}
         {{ render_field(SearchByPDBidForm.submit) }}
+        {{ SearchByPDBidForm.hidden_tag() }}
     </form>
 
 
@@ -26,6 +27,7 @@
         {{ render_field(SearchFilesForm.sizeMin) }}
         {{ render_field(SearchFilesForm.sizeMax) }}
         {{ render_field(SearchFilesForm.submit) }}
+        {{ SearchFilesForm.hidden_tag() }}
     </form>
 
 
@@ -33,6 +35,7 @@
     <form name = "SearchByKeyWD" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
         {{ render_field(SearchByKeyWDForm.keywd) }}
         {{ render_field(SearchByKeyWDForm.submit) }}
+        {{ SearchByKeyWDForm.hidden_tag() }}
     </form>
 
 {% endblock %}
