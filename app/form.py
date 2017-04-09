@@ -31,7 +31,7 @@ class SearchByPDBidForm(FlaskForm):
 	"""
 	Form for search in database by a PDB ID.
 	"""
-	PDBid = TextAreaField(u'PDB ID or list of PDB IDs separated by carriage return')
+	PDBid = TextAreaField('PDB ID or list of PDB IDs separated by carriage return')
 	submit = SubmitField('Search', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
 
@@ -53,6 +53,6 @@ class SearchByKeyWD(FlaskForm):
 	"""
 	Form for search by keyword in the database.
 	"""
-	keywd = TextAreaField(u'Ex: integrin, Homo sapiens...')
+	keywd = TextAreaField('Ex: integrin, Homo sapiens...')
 	submit = SubmitField('Search', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
