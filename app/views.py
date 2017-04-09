@@ -2,8 +2,8 @@ import flask
 import ramachandran
 import annot
 from app import app, pdb_set, db
-from form import UploadForm
 from model import Annotation
+from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
 
 @app.route("/")
 def index():
@@ -20,18 +20,19 @@ def upload():
     """
     form  = UploadForm()
     if form.validate_on_submit():
-        
+
         filename = pdb_set.save(
             storage = form.pdb_file.data, # The uploaded file to save
         )
+        print (filename)
         path = pdb_set.path(filename)
         print (path)
         angles = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
         print(angles) #TEMP
         ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
-        
+
         insert(filename)
-        
+
         return "success"
     return flask.render_template('upload.html', form = form)
 
@@ -50,7 +51,7 @@ def search():
         PDBid = idForm.PDBid.data
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid = PDBid.split("\n")
-        # Lancer sur la page de "résultats lors d’une requête issue de 
+        # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
     elif SearchFilesForm.validate_on_submit():
         form = SearchFilesForm()
@@ -68,7 +69,7 @@ def search():
             sizeMin = filesForm.sizeMin.data
         if filesForm.sizeMax.data != "":
             sizeMax = filesForm.sizeMin.data
-        # Lancer sur la page de "résultats lors d’une requête issue de 
+        # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
     elif SearchByKeyWD.validate_on_submit():
         form = SearchByKeyWD()
@@ -97,4 +98,3 @@ def insert(filename):
     db.session.add(pross_data)
     db.session.commit()
     return
-
