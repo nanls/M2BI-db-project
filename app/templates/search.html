@@ -1,0 +1,28 @@
+{% extends "skeleton.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+        <p class = "error"><strong>No file correspond to your request in the database. You can upload it in the database from the upload page.</strong>
+    {% endif %}
+
+    {% from "_formhelpers.html" import render_field %}
+    <form name = "SearchByPDBidForm" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
+        {{ render_field(SearchByPDBidForm.PDBid) }}
+        {{ render_field(SearchByPDBidForm.submit) }}
+    </form>
+    <form name = "SearchFilesForm" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
+        {{ render_field(SearchFilesForm.resMin) }}
+        {{ render_field(SearchFilesForm.resMax) }}
+        {{ render_field(SearchFilesForm.sizeMin) }}
+        {{ render_field(SearchFilesForm.sizeMax) }}
+        {{ render_field(SearchFilesForm.submit) }}
+    </form>
+    <form name = "SearchByKeyWD" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
+        {{ render_field(SearchByKeyWD.keywd) }}
+        {{ render_field(SearchByKeyWD.submit) }}
+    </form>
+    
+{% endblock %}
+
