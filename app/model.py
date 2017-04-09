@@ -132,6 +132,9 @@ class PDBFile(db.Model):
             # - No psi for last residue
             print(angles)
 
+        for (atom_idx, (phi, psi)) in enumerate(angles) :
+            self.angles.append(Angle(self.id, atom_idx, phi, psi))
+
 class Chain(db.Model):
     """
     Attributes :
