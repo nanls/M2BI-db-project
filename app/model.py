@@ -9,17 +9,50 @@ class PDBFile(db.Model):
     -----------
     id : 4-character string, primary key
         the 4-character unique identifier of every entry in the Protein Data Bank
-    header : varchar
     seq : text
         the corresponding sequence using 1-letter AA code
+
+    keywords : string
+
+    name : string
+
+    head : string
+
+    deposition_date : string
+
+    release_date : string
+
+    structure_method : string
+
     resolution : float
+        a measure of the quality of the data that has been collected on
+        the crystal containing the protein or nucleic acid
+    structure_reference : string
+        list of references
+    journal_reference : string
 
+    author : string
 
+    compound : string
+        various information about the crystallized compound
     """
     id = db.Column(db.String(4), primary_key=True)
-    header = db.Column(db.String)
     seq = db.Column(db.Text)
+
+    resolution = db.Column(db.Text)
+    keywords = db.Column(db.Text)
+    name = db.Column(db.Text)
+    head = db.Column(db.Text)
+    deposition_date = db.Column(db.Text)
+    release_date = db.Column(db.Text)
+    structure_method = db.Column(db.Text)
     resolution = db.Column(db.Float)
+    structure_reference = db.Column(db.Text)
+    journal_reference = db.Column(db.Text)
+    author = db.Column(db.Text)
+    compound  = db.Column(db.Text)
+
+
 
     chains = db.relationship('Chain', backref='pdb', lazy='dynamic')
     annotations = db.relationship('Annotation', backref='pdb', lazy='dynamic')
@@ -36,9 +69,7 @@ class PDBFile(db.Model):
         header : string
         seq : text
             the corresponding sequence using 1-letter AA code
-        resolution : float
-            a measure of the quality of the data that has been collected on
-            the crystal containing the protein or nucleic acid
+        resolution :
         """
         self.id = id
         self.header = header
