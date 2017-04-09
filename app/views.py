@@ -24,6 +24,7 @@ def upload():
         filename = pdb_set.save(
             storage = form.pdb_file.data, # The uploaded file to save
         )
+        pdb_id = filename[0:4]
         path = pdb_set.path(filename)
         print (path)#TEMP
         #insert data into db
