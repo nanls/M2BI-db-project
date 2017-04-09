@@ -35,14 +35,12 @@ def upload():
         current_pdb = model.PDBFile(path)
         dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
         pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
-        #add angles PHI & PSI
-        angles_data = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
+
         #TODO : header+name+length...
 
         #Add all annotations into db
         db.session.add(dssp_data)
         db.session.add(pross_data)
-        db.session.add(angles_data)
         db.session.commit()
 
         #TODO : move next line into a future display function !!!!!!
