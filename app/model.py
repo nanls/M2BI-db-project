@@ -100,7 +100,7 @@ class PDBFile(db.Model):
 
         #The sequence of each polypeptide can then easily be obtained from the Polypeptide objects :
         self.seq = ""
-        for pp in ppb.build_peptides(struct):
+        for pp, chain in zip(ppb.build_peptides(struct), struct.get_chains()) :
             print (pp)
 
             seq = pp.get_sequence()
@@ -119,6 +119,8 @@ class PDBFile(db.Model):
             print (start)
             end = pp[-1].get_id()[1]
             print (end)
+
+            self.chains.append(Chain(chain.id, self.id, start, end))
 
 
             # Get phi psi angle
