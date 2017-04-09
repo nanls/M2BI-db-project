@@ -5,6 +5,7 @@
       {% else%}
         {{ field.label }}
       {% endif %}
+  <dt>
   <dd>{{ field(**kwargs)|safe }}
   {% if field.errors %}
     <ul id="flashes">
