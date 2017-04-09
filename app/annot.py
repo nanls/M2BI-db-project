@@ -26,6 +26,7 @@ def dsspAnnot(pdb):
 			P: PPII
 			" ": coil
 	"""
+	# example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
 	os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp/"+pdb[-8:-4]+".dssp")
 	flag = 0
 	annot = ""
@@ -56,6 +57,7 @@ def prossAnnot(pdb):
 		P: polyproline
 		-: coil
 	"""
+	# example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
 	os.system("tools/PROSS/PROSS.py "+pdb+" > temp/"+pdb[-8:-4]+".pross")
 	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/"+pdb[-8:-4]+".pross > temp/"+pdb[-8:-4]+".pross2")
 	flag = 0
