@@ -46,15 +46,13 @@ def search():
     filesForm = form.SearchFilesForm()
     keywdForm = form.SearchByKeyWD()
 
-    if SearchByPDBidForm.validate_on_submit():
-        form = SearchByPDBidForm()
+    if idForm.validate_on_submit():
         PDBid = idForm.PDBid.data
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid = PDBid.split("\n")
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
-    elif SearchFilesForm.validate_on_submit():
-        form = SearchFilesForm()
+    elif filesForm.validate_on_submit():
         # Default values definitions
         resMin = 0.0
         resMax = 10000.0
@@ -71,8 +69,7 @@ def search():
             sizeMax = filesForm.sizeMin.data
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
-    elif SearchByKeyWD.validate_on_submit():
-        form = SearchByKeyWD()
+    elif keywdForm.validate_on_submit():
         keywd = keywdForm.keywd.data
     return flask.render_template('search.html', SearchByPDBidForm = idForm, SearchFilesForm = filesForm, SearchByKeyWDForm = keywdForm)
 
