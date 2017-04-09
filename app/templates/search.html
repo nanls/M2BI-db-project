@@ -3,13 +3,13 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-    {% if SearchByPDBidForm.errors or SearchFilesForm.errors or  SearchByKeyWDForm.errors %}    
+    {% if SearchByPDBidForm.errors or SearchFilesForm.errors or  SearchByKeyWDForm.errors %}
         <p class = "error"><strong>No file correspond to your request in the database.</strong>
     {% endif %}
     {% if SearchByPDBidForm.errors%}
         <p class = "error"><strong>You can upload it in the database from the upload page.</strong>
     {% endif %}
-    
+
 
 
     {% from "_formhelpers.html" import render_field %}
@@ -28,6 +28,5 @@
         {{ render_field(SearchByKeyWDForm.keywd) }}
         {{ render_field(SearchByKeyWDForm.submit) }}
     </form>
-    
-{% endblock %}
 
+{% endblock %}
