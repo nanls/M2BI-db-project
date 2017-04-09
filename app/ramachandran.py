@@ -153,10 +153,8 @@ if __name__ == "__main__":
                  " or 'radian'\n")
     try:
         angles = compute_phi_psi_angles(pdb_file, angle_unit)
-        print angles
+        print (angles)
         compute_ramachandran_map(angles, angle_unit)
     except:
         sys.exit("the specified file is not openable or not" +
                  "a pdb file or just not specified\n")
-
-   
