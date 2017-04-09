@@ -99,6 +99,7 @@ class PDBFile(db.Model):
         ppb = PDB.CaPPBuilder()
 
         #The sequence of each polypeptide can then easily be obtained from the Polypeptide objects :
+        self.seq = ""
         for pp in ppb.build_peptides(struct):
             print (pp)
 
@@ -106,6 +107,7 @@ class PDBFile(db.Model):
             # The sequence is represented as a Biopython Seq object,
             # and its alphabet is defined by a ProteinAlphabet object.
             print (seq)
+            self.seq += seq
 
             # Get the boundary of the peptide
             # using residu id
