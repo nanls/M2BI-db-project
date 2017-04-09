@@ -33,9 +33,8 @@ def upload():
         print (path)#TEMP
 
         current_pdb = model.PDBFile(path)
-        #filename = "path/3xal.pdb", filename[-8:-4] = "3xal"
-        dssp_data = model.Annotation(pdb_id=filename[-8:-4], method="dssp", result=annot.dsspAnnot(path))
-        pross_data = model.Annotation(pdb_id=filename[-8:-4], method="pross", result=annot.prossAnnot(path))
+        dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
+        pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
         #add angles PHI & PSI
         angles_data = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
         #TODO : header+name+length...
