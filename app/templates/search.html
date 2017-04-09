@@ -3,9 +3,14 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-    {% if form.errors %}
-        <p class = "error"><strong>No file correspond to your request in the database. You can upload it in the database from the upload page.</strong>
+    {% if SearchByPDBidForm.errors or SearchFilesForm.errors or  SearchByKeyWDForm.errors %}    
+        <p class = "error"><strong>No file correspond to your request in the database.</strong>
     {% endif %}
+    {% if SearchByPDBidForm.errors%}
+        <p class = "error"><strong>You can upload it in the database from the upload page.</strong>
+    {% endif %}
+    
+
 
     {% from "_formhelpers.html" import render_field %}
     <form name = "SearchByPDBidForm" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
