@@ -42,9 +42,9 @@ def search():
     """
     Define the search route.
     """
-    idForm = SearchByPDBidForm()
-    filesForm = SearchFilesForm()
-    keywdForm = SearchByKeyWD()
+    idForm = form.SearchByPDBidForm()
+    filesForm = form.SearchFilesForm()
+    keywdForm = form.SearchByKeyWD()
 
     if SearchByPDBidForm.validate_on_submit():
         form = SearchByPDBidForm()
@@ -74,7 +74,7 @@ def search():
     elif SearchByKeyWD.validate_on_submit():
         form = SearchByKeyWD()
         keywd = keywdForm.keywd.data
-    return flask.render_template('search.html', form = form)
+    return flask.render_template('search.html', SearchByPDBidForm = idForm, SearchFilesForm = filesForm, SearchByKeyWDForm = keywdForm)
 
 
 def insert(filename):

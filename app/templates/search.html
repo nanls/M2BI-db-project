@@ -20,8 +20,8 @@
         {{ render_field(SearchFilesForm.submit) }}
     </form>
     <form name = "SearchByKeyWD" method = "POST" onsubmit = "" action = "{{url_for('search')}}" enctype = "multipart/form-data">
-        {{ render_field(SearchByKeyWD.keywd) }}
-        {{ render_field(SearchByKeyWD.submit) }}
+        {{ render_field(SearchByKeyWDForm.keywd) }}
+        {{ render_field(SearchByKeyWDForm.submit) }}
     </form>
     
 {% endblock %}
