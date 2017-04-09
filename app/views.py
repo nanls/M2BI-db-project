@@ -20,7 +20,7 @@ def upload():
     """
     form  = UploadForm()
     if form.validate_on_submit():
-        
+
         filename = pdb_set.save(
             storage = form.pdb_file.data, # The uploaded file to save
         )
@@ -42,7 +42,7 @@ def upload():
 
         #TODO : move next line into a future display function !!!!!!
         #ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
-        
+
         return "success"
     return flask.render_template('upload.html', form = form)
 
@@ -57,7 +57,7 @@ def insert(filename, path, form):
     path : string
         path of the file
     form : instance of UploadForm()
-    
+
     Return :
     --------
     None

@@ -68,7 +68,7 @@ class PDBFile(db.Model):
         filepath : string
             path to the pdb file
         """
-        
+
 
         #-----
         # init parser :
