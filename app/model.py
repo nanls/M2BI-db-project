@@ -13,14 +13,14 @@ class PDBFile(db.Model):
     seq : text
         the corresponding sequence using 1-letter AA code
     resolution : float
-    
-    
+
+
     """
     id = db.Column(db.String(4), primary_key=True)
     header = db.Column(db.String)
     seq = db.Column(db.Text)
     resolution = db.Column(db.Float)
-    
+
     chains = db.relationship('Chain', backref='pdb', lazy='dynamic')
     annotations = db.relationship('Annotation', backref='pdb', lazy='dynamic')
     angles = db.relationship('Angle', backref='pdb', lazy='dynamic')
@@ -45,7 +45,7 @@ class PDBFile(db.Model):
         self.seq = seq
         self.resolution = resolution
 
-        
+
 class Chain(db.Model):
     """
     Attributes :
@@ -53,7 +53,7 @@ class Chain(db.Model):
     id : 1-character string
     pdb_id : 4-character string
         the 4-character unique identifier of every entry in the Protein Data Bank
-    start : integer 
+    start : integer
         index of the first chain residue
     stop : integer
         index of the last chain residue (start < stop)
@@ -62,7 +62,7 @@ class Chain(db.Model):
     pdb_id = db.Column(db.String(4), db.ForeignKey('pdb_file.id'), primary_key=True,)
     start = db.Column(db.Integer())
     stop = db.Column(db.Integer())
-    
+
     def __init__(self, id, pdb_id, start, stop):
         """
         constructor of one chain instance : Chain
@@ -71,10 +71,10 @@ class Chain(db.Model):
         id : integer
         pdb_id : 4-character string
             the 4-character unique identifier of every entry in the Protein Data Bank
-        start : integer 
+        start : integer
             index of the first chain residue
         stop : integer
-            index of the last chain residue 
+            index of the last chain residue
             (we assume that start < stop in the PDB file)
         """
         self.id = id
@@ -82,7 +82,7 @@ class Chain(db.Model):
         self.start = start
         self.stop = stop
 
-    
+
 class Annotation(db.Model):
     """
     Attributes :
@@ -112,7 +112,7 @@ class Annotation(db.Model):
         self.pdb_id = pdb_id
         self.method = method
         self.result = result
-        
+
 class Angle(db.Model):
     """
     Attributes :
@@ -146,4 +146,3 @@ class Angle(db.Model):
         self.pdb_id = pdb_id
         self.method = method
         self.result = result
-
