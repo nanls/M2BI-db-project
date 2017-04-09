@@ -1,5 +1,6 @@
 import flask
 import ramachandran
+import annot
 from app import app, pdb_set
 from form import UploadForm
 
@@ -25,6 +26,8 @@ def upload():
         print (filename) 
         path = pdb_set.path(filename)
         print (path)
+        dssp = annot.dsspAnnot(path)
+        pross = annot.prossAnnot(path)
         angles = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data)
         print(angles)
         ramachandran.compute_ramachandran_map(angles, form.angle_unit.data)
