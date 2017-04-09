@@ -58,23 +58,16 @@ class PDBFile(db.Model):
     annotations = db.relationship('Annotation', backref='pdb', lazy='dynamic')
     angles = db.relationship('Angle', backref='pdb', lazy='dynamic')
 
-    def __init__(self, id, header, seq, resolution):
+    def __init__(self, filepath):
         """
         constructor of one pdb file : PDBFile
 
-        Arguments :
+        Argument :
         ------------
-        id : 4-character string
-            the 4-character unique identifier of every entry in the Protein Data Bank
-        header : string
-        seq : text
-            the corresponding sequence using 1-letter AA code
-        resolution :
+        filepath : string
+            path to the pdb file
         """
-        self.id = id
-        self.header = header
-        self.seq = seq
-        self.resolution = resolution
+        pass
 
 
 class Chain(db.Model):
