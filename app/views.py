@@ -1,9 +1,9 @@
 import flask
 import ramachandran
 import annot
+import model
 from app import app, pdb_set, db
 from form import UploadForm
-from model import Annotation
 
 @app.route("/")
 def index():
@@ -25,35 +25,42 @@ def upload():
             storage = form.pdb_file.data, # The uploaded file to save
         )
         path = pdb_set.path(filename)
-        print (path)
-        angles = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
-        print(angles) #TEMP
-        ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
-        
-        insert(filename)
+        print (path)#TEMP
+        #insert data into db
+        #filename = "path/3xal.pdb", filename[-8:-4] = "3xal"
+        dssp_data = model.Annotation(pdb_id=filename[-8:-4], method="dssp", result=annot.dsspAnnot(path))
+        pross_data = model.Annotation(pdb_id=filename[-8:-4], method="pross", result=annot.prossAnnot(path))
+        #add angles PHI & PSI
+        angles_data = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
+        #TODO : header+name+length...
+
+        #Add all annotations into db
+        db.session.add(dssp_data)
+        db.session.add(pross_data)
+        db.session.add(angles_data)
+        db.session.commit()
+
+        #TODO : move next line into a future display function !!!!!!
+        #ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
         
         return "success"
     return flask.render_template('upload.html', form = form)
 
 
-def insert(filename):
+def insert(filename, path, form):
     """
     Insertion of computed data into database
     Arguments :
     -----------
     filename : string
         name of the pdb file
+    path : string
+        path of the file
+    form : instance of UploadForm()
+    
     Return :
     --------
     None
     """
-    #TODO !!!!!!!!!!! add angles PHI & PSI AND header+name+length...
-    dssp_data = model.Annotation(pdb_id=filename[-8:-4], method="dssp", result=annot.dsspAnnot(path))
-    #filename = "path/3xal.pdb", filename[-8:-4] = "3xal"
-    pross_data = model.Annotation(pdb_id=filename[-8:-4], method="pross", result=annot.prossAnnot(path))
 
-    #Add all annotations into db
-    db.session.add(dssp_data)
-    db.session.add(pross_data)
-    db.session.commit()
     return
