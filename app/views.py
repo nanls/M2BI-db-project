@@ -34,8 +34,9 @@ def upload():
 
         current_pdb = model.PDBFile(path)
         dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
+        current_pdb.annotations.append(dssp_data)
         pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
-
+        current_pdb.annotations.append(pross_data)
         #TODO : header+name+length...
 
         #Add all annotations into db
