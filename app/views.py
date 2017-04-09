@@ -24,8 +24,8 @@ def upload():
         filename = pdb_set.save(
             storage = form.pdb_file.data, # The uploaded file to save
         )
-        path = pdb_set.path(filename) #TEMP
-        print (path) #TEMP
+        path = pdb_set.path(filename)
+        print (path)
         angles = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
         print(angles) #TEMP
         ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
@@ -43,15 +43,11 @@ def insert(filename):
     -----------
     filename : string
         name of the pdb file
-    dssp : string
-        annotation by dssp method
-    pross : string
-        annotation by pross method
     Return :
     --------
     None
     """
-    #TODO !!!!!!!!!!! add angles PHI & PSI
+    #TODO !!!!!!!!!!! add angles PHI & PSI AND header+name+length...
     dssp_data = model.Annotation(pdb_id=filename[-8:-4], method="dssp", result=annot.dsspAnnot(path))
     #filename = "path/3xal.pdb", filename[-8:-4] = "3xal"
     pross_data = model.Annotation(pdb_id=filename[-8:-4], method="pross", result=annot.prossAnnot(path))
