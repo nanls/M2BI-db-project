@@ -26,17 +26,17 @@ def dsspAnnot(pdb):
 			P: PPII
 			" ": coil
 	"""
-	os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp.txt")
+	os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp/dssp.txt")
 	flag = 0
 	annot = ""
-	with open("temp.txt", "r") as filin:
+	with open("temp/dssp.txt", "r") as filin:
 		for line in filin:
 			if line[0:3] == "  #":
 				flag = 1
 			elif flag == 1:
 				annot += line[16]
 		print(annot)
-	os.system("rm temp.txt")
+	os.system("rm temp/dssp.txt")
 	return(annot)
 
 
@@ -57,10 +57,10 @@ def prossAnnot(pdb):
 		-: coil
 	"""
 	os.system("tools/PROSS/PROSS.py "+pdb+" > "+pdb[:-4]+".pross")
-	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl "+pdb[:-4]+".pross > temp.txt")
+	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl "+pdb[:-4]+".pross > temp/pross.txt")
 	flag = 0
 	annot = ""
-	with open("temp.txt", "r") as filin:
+	with open("temp/pross.txt", "r") as filin:
 		for line in filin:
 			if line[0] == ">" and line[-7:-1] == " pross":
 				flag = 1
@@ -68,7 +68,7 @@ def prossAnnot(pdb):
 				annot += line[:-1]
 		print(annot)
 	os.system("rm "+pdb[:-4]+".pross")
-	os.system("rm temp.txt")
+	os.system("rm temp/pross.txt")
 	return(annot)
 
 
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 	if len(sys.argv) != 2:
 		sys.exit("ERROR: one argument is needed (pdb file)")
 	s_file = sys.argv[1]
-	if s_file[-4:] != ".pdb":
+	if s_file[-4:] != ".pdb" or s_file[:-4] != ".ent":
 		sys.exit("ERROR: reference file must be a pdb file")
 
 	dssp = dsspAnnot(s_file)
