@@ -69,6 +69,9 @@ class PDBFile(db.Model):
             path to the pdb file
         """
 
+        #-----
+        # save id extracted from path :
+        self.id = filepath[-8:-4]
 
         #-----
         # init parser :
