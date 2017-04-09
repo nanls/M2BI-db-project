@@ -34,3 +34,44 @@ def upload():
         
         return "success"
     return flask.render_template('upload.html', form = form)
+
+@app.route('/search', methods = ['GET', 'POST'])
+def search():
+    """
+    Define the search route.
+    """
+    idForm = SearchByPDBidForm()
+    filesForm = SearchFilesForm()
+    keywdForm = SearchByKeyWD()
+
+    if SearchByPDBidForm.validate_on_submit():
+        form = SearchByPDBidForm()
+        PDBid = idForm.PDBid.data
+        # Creates a list of PDB IDs for which a assignation is wanted
+        PDBid = PDBid.split("\n")
+        # Lancer sur la page de "résultats lors d’une requête issue de 
+        # l’interrogation" (pas encore créée)
+    elif SearchFilesForm.validate_on_submit():
+        form = SearchFilesForm()
+        # Default values definitions
+        resMin = 0.0
+        resMax = 10000.0
+        sizeMin = 15
+        sizeMax = 10000
+        # User's values retreiving (if any)
+        if filesForm.resMin.data != "":
+            resMin = filesForm.resMin.data
+        if filesForm.resMax.data != "":
+            resMax = filesForm.resMax.data
+        if filesForm.sizeMin.data != "":
+            sizeMin = filesForm.sizeMin.data
+        if filesForm.sizeMax.data != "":
+            sizeMax = filesForm.sizeMin.data
+        # Lancer sur la page de "résultats lors d’une requête issue de 
+        # l’interrogation" (pas encore créée)
+    elif SearchByKeyWD.validate_on_submit():
+        form = SearchByKeyWD()
+        keywd = keywdForm.keywd.data
+    return flask.render_template('search.html', form = form)
+
+
