@@ -40,8 +40,7 @@ def upload():
         #TODO : header+name+length...
 
         #Add all annotations into db
-        db.session.add(dssp_data)
-        db.session.add(pross_data)
+        db.session.add(current_pdb)
         db.session.commit()
 
         #TODO : move next line into a future display function !!!!!!
