@@ -25,9 +25,12 @@ def upload():
             storage = form.pdb_file.data, # The uploaded file to save
         )
         pdb_id = filename[0:4]
+
+        # TODO : check if the file is already in the db
+
+        # if not, insert data into db :
         path = pdb_set.path(filename)
         print (path)#TEMP
-        #insert data into db
         #filename = "path/3xal.pdb", filename[-8:-4] = "3xal"
         dssp_data = model.Annotation(pdb_id=filename[-8:-4], method="dssp", result=annot.dsspAnnot(path))
         pross_data = model.Annotation(pdb_id=filename[-8:-4], method="pross", result=annot.prossAnnot(path))
