@@ -3,6 +3,7 @@ import ramachandran
 import annot
 from app import app, pdb_set
 from form import UploadForm
+import model
 
 @app.route("/")
 def index():
@@ -43,3 +44,4 @@ def about():
     """
     nb_pdbs = model.PDBFile.query.count()
     print(nb_pdbs)
+    return "success"
