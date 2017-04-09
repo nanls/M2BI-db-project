@@ -6,7 +6,7 @@ They have several fields defined, and a CSRF token hidden field that is created
 automatically.
 """
 from flask_wtf import FlaskForm
-from wtforms.fields import SubmitField, RadioField
+from wtforms.fields import SubmitField, RadioField, TextAreaField, DecimalField, IntegerField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 import app
