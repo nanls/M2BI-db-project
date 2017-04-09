@@ -58,6 +58,7 @@ def prossAnnot(pdb):
 		-: coil
 	"""
 	# example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
+	# .pross file is the PROSS.py output, .pross2 file is the extract_PROSSSEQ2D.pl output
 	os.system("tools/PROSS/PROSS.py "+pdb+" > temp/"+pdb[-8:-4]+".pross")
 	os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/"+pdb[-8:-4]+".pross > temp/"+pdb[-8:-4]+".pross2")
 	flag = 0
