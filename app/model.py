@@ -2,6 +2,7 @@
 Model implementation
 """
 from app import db
+from Bio import PDB
 
 class PDBFile(db.Model):
     """
@@ -67,8 +68,62 @@ class PDBFile(db.Model):
         filepath : string
             path to the pdb file
         """
-        pass
+        
 
+        #-----
+        # init parser :
+        parser = PDB.PDBParser()
+        struct = parser.get_structure("", filepath)
+
+        #-----
+        # extract from header :
+        self.keywords = struct.header['keywords']
+        self.name = struct.header['name']
+        self.head = struct.header['head']
+        self.deposition_date = struct.header['deposition_date']
+        self.release_date = struct.header['release_date']
+        self.structure_method = struct.header['structure_method']
+        self.resolution = struct.header['resolution']
+        self.structure_reference = struct.header['structure_reference']
+        self.journal_reference = struct.header['journal_reference']
+        self.author = struct.header['author']
+        self.compound = struct.header['compound']
+
+        #-----
+        # Get the sequence and the angles
+
+        # extract all polypeptides from the structure :
+        ppb = PDB.CaPPBuilder()
+
+        #The sequence of each polypeptide can then easily be obtained from the Polypeptide objects :
+        for pp in ppb.build_peptides(struct):
+            print (pp)
+
+            seq = pp.get_sequence()
+            # The sequence is represented as a Biopython Seq object,
+            # and its alphabet is defined by a ProteinAlphabet object.
+            print (seq)
+
+            # Get the boundary of the peptide
+            # using residu id
+            # A residue id is a tuple with three elements:
+            # - The hetero-flag
+            # - *The sequence identifier in the chain*
+            # - The insertion code,
+            start = pp[0].get_id()[1]
+            print (start)
+            end = pp[-1].get_id()[1]
+            print (end)
+
+
+            # Get phi psi angle
+            angles = pp.get_phi_psi_list()
+            # Some are None because :
+            # - Some atoms are missing
+            #   -> Phi/Psi cannot be calculated for some residue
+            # - No phi for residue 0
+            # - No psi for last residue
+            print(angles)
 
 class Chain(db.Model):
     """
