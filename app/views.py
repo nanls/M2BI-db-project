@@ -46,10 +46,9 @@ def search_by_pdb_id():
 
     if idForm.validate_on_submit() :
         print ('OKKAYYYYYYYYYYYYYYYYYYYYYY')
-        PDBid = idForm.PDBid.data
-        print (PDBid)
         # Creates a list of PDB IDs for which a assignation is wanted
-        PDBid = PDBid.split()
+        PDBid_list = idForm.PDBid.data.split()
+        PDBfiles_list = [model.PDBFile.get(id) for id in PDBid_list]
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
         return 'success search_by_pdb_id'
