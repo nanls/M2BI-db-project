@@ -2,7 +2,7 @@ import flask
 import ramachandran
 import annot
 from app import app, pdb_set, db
-from model import Annotation
+import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
 
 @app.route("/")
