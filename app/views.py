@@ -49,7 +49,7 @@ def search_by_pdb_id():
         PDBid = idForm.PDBid.data
         print (PDBid)
         # Creates a list of PDB IDs for which a assignation is wanted
-        PDBid = PDBid.split("\n")
+        PDBid = PDBid.split()
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
         return 'success search_by_pdb_id'
