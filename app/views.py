@@ -51,7 +51,7 @@ def about():
     print (num_P)
 
 
-    return "success"
+    return flask.render_template('about.html', num_pdb = nb_pdbs, num_P = num_P)
 
 @app.route('/search_by_pdb_id', methods = ['POST'])
 def search_by_pdb_id():
