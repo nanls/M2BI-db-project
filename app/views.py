@@ -44,6 +44,13 @@ def about():
     """
     nb_pdbs = model.PDBFile.query.count()
     print(nb_pdbs)
+
+    num_P = 0
+    for annotation in model.Annotation.query.all() :
+        num_P += annotation.result.count('P')
+    print (num_P)
+
+
     return "success"
 
 @app.route('/search_by_pdb_id', methods = ['POST'])
