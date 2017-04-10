@@ -87,10 +87,10 @@ class PDBFile(db.Model):
         self.release_date = struct.header['release_date']
         self.structure_method = struct.header['structure_method']
         self.resolution = struct.header['resolution']
-        self.structure_reference = struct.header['structure_reference']
+        self.structure_reference = str(struct.header['structure_reference'])
         self.journal_reference = struct.header['journal_reference']
         self.author = struct.header['author']
-        self.compound = struct.header['compound']
+        self.compound = str(struct.header['compound'])
 
         #-----
         # Get the sequence and the angles
@@ -103,7 +103,7 @@ class PDBFile(db.Model):
         for pp, chain in zip(ppb.build_peptides(struct), struct.get_chains()) :
             print (pp)
 
-            seq = pp.get_sequence()
+            seq = str(pp.get_sequence())
             # The sequence is represented as a Biopython Seq object,
             # and its alphabet is defined by a ProteinAlphabet object.
             print (seq)
