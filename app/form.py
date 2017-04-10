@@ -20,13 +20,13 @@ class UploadForm(FlaskForm):
         FileRequired(),
         FileAllowed( app.pdb_set, '.pdb and .ent only!')
     ])
-    
-    
+
+
     submit = SubmitField('Upload file', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
     angle_unit = RadioField('Angle units', choices=[('degree','degree (default)'),('radian','radian')])
 
-    
+
 class SearchByPDBidForm(FlaskForm):
 	"""
 	Form for search in database by a PDB ID.
@@ -37,7 +37,7 @@ class SearchByPDBidForm(FlaskForm):
 
 class SearchFilesForm(FlaskForm):
 	"""
-	Form for display PDB in database according to resolution and/or 
+	Form for display PDB in database according to resolution and/or
 	criteria.
 	"""
 	# Resolution?
@@ -55,4 +55,3 @@ class SearchByKeyWD(FlaskForm):
 	"""
 	keywd = TextAreaField('Ex: integrin, Homo sapiens...')
 	submit = SubmitField('Search', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
-
