@@ -61,8 +61,17 @@ def about():
         mean_resol /= nb_pdbs
     print(mean_resol)
 
+    mean_len = 0
+    if nb_pdbs != 0:
+        for pdb in db.session.query(model.PDBFile.seq):
+            mean_len += len(pdb.seq)
+        mean_len /= nb_pdbs
+    print(mean_len)
 
-    return flask.render_template('about.html', num_pdb = nb_pdbs, num_P = num_P, mean_resol = mean_resol)
+
+    return flask.render_template('about.html', num_pdb = nb_pdbs,
+                                 num_P = num_P, mean_resol = mean_resol,
+                                 mean_len = mean_len)
 
 @app.route('/search_by_pdb_id', methods = ['POST'])
 def search_by_pdb_id():
