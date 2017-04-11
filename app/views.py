@@ -5,6 +5,7 @@ import flask
 import ramachandran
 import annot
 from app import app, pdb_set, db
+from sqlalchemy import func
 import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
 
@@ -45,7 +46,7 @@ def about():
     """
     Define the about route
     """
-    nb_pdbs = model.PDBFile.query.count()
+    nb_pdbs = db.session.query(func.count(model.PDBFile.id)).scalar()
     print(nb_pdbs)
 
     num_P = 0
