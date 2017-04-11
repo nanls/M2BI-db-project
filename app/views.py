@@ -54,11 +54,7 @@ def about():
         num_P += annotation.result.count('P')
     print (num_P)
 
-    mean_resol = 0
-    if nb_pdbs != 0:
-        for pdb in db.session.query(model.PDBFile.resolution):
-            mean_resol += pdb.resolution
-        mean_resol /= nb_pdbs
+    mean_resol = db.session.query(func.avg(model.PDBFile.resolution)).scalar()
     print(mean_resol)
 
     mean_len = 0
