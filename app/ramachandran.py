@@ -142,6 +142,7 @@ def compute_ramachandran_map(angles, unit="degree"):
     # Changes figure size
     fig.set_size_inches(10.0, 10.0)
     # Saves figures
+
     if not os.path.exists('temp'):
         os.mkdir('temp')
     name = os.path.basename(pdb_file)[0:4]
