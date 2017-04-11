@@ -57,11 +57,7 @@ def about():
     mean_resol = db.session.query(func.avg(model.PDBFile.resolution)).scalar()
     print(mean_resol)
 
-    mean_len = 0
-    if nb_pdbs != 0:
-        for pdb in db.session.query(model.PDBFile.seq):
-            mean_len += len(pdb.seq)
-        mean_len /= nb_pdbs
+    mean_len = db.session.query(func.avg(func.length(model.PDBFile.seq))).scalar()
     print(mean_len)
 
 
