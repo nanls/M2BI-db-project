@@ -4,6 +4,7 @@ import annot
 from app import app, pdb_set, db
 import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
+from sqlalchemy import and_, func
 
 @app.route("/")
 def index():
@@ -88,10 +89,15 @@ def search_files():
             sizeMax = filesForm.sizeMax.data
         print (sizeMin, sizeMax)
 
-        # Lancer sur la page de "résultats lors d’une requête issue de
-        # l’interrogation" (pas encore créée)
+        # Retrive corresponding pdbs :
 
-        # l’interrogation" (pas encore créée)
+        pdb_list = model.PDBFile.query.filter(and_(
+            model.PDBFile.resolution >= resMin,
+            model.PDBFile.resolution <= resMax,
+            func.length(model.PDBFile.seq) >= sizeMin,
+            func.length(model.PDBFile.seq) <= sizeMax,
+        )).all()
+        print (pdb_list)
         return 'succes search_files'
     return flask.redirect(flask.url_for("search"), code=302)
 
