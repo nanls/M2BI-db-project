@@ -64,22 +64,30 @@ def search_files():
     if filesForm.validate_on_submit():
         print (filesForm.resMin.data)
 
-         # Default values definitions
-        resMin = db.session.query(db.func.min(model.PDBFile.resolution)).scalar()
-        resMax = db.session.query(db.func.max(model.PDBFile.resolution)).scalar()
+        # User's values retreiving (if any)
+        # or default values definitions
+        if not filesForm.resMin.data:
+            resMin = db.session.query(db.func.min(model.PDBFile.resolution)).scalar()
+        else :
+            resMin = filesForm.resMin.data
+
+        if not filesForm.resMax.data:
+            resMax = db.session.query(db.func.max(model.PDBFile.resolution)).scalar()
+        else :
+            resMax = filesForm.resMax.data
         print (resMin, resMax)
 
-        sizeMin = 15
-        sizeMax = 10000
-        # User's values retreiving (if any)
-        if filesForm.resMin.data != "":
-            resMin = filesForm.resMin.data
-        if filesForm.resMax.data != "":
-            resMax = filesForm.resMax.data
-        if filesForm.sizeMin.data != "":
+        if not filesForm.sizeMin.data:
+            sizeMin = 15
+        else :
             sizeMin = filesForm.sizeMin.data
-        if filesForm.sizeMax.data != "":
-            sizeMax = filesForm.sizeMin.data
+
+        if not filesForm.sizeMax.data:
+            sizeMax = 10000
+        else :
+            sizeMax = filesForm.sizeMax.data
+        print (sizeMin, sizeMax)
+
         # Lancer sur la page de "résultats lors d’une requête issue de
         # l’interrogation" (pas encore créée)
 
