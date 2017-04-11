@@ -48,16 +48,11 @@ def positionsPrinter(length):
     ARGUMENT:
         length of the sequence to consider.
     """
-    numbers = range(0, 10000, 10)
-    numbers[0] = 1
-    pos = ""
-    for i in xrange((length/10)+1):
-        if i == 0:
-            pos += "{:<9d}".format(numbers[0])
-        else:
-            pos += "{:<10d}".format(numbers[i])
+    numbers = range(10, length + 1, 10)
+    pos = ''
+    for number in numbers:
+        pos += "{:>10d}".format(number )
     return pos + "\n"
-
 
 @app.route("/results/<string:PDBid>/<string:unit>")
 def resultsForOnePDB(PDBid, unit):
