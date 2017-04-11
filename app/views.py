@@ -65,8 +65,10 @@ def search_files():
         print (filesForm.resMin.data)
 
          # Default values definitions
-        resMin = 0.0
-        resMax = 10000.0
+        resMin = db.session.query(db.func.min(model.PDBFile.resolution)).scalar()
+        resMax = db.session.query(db.func.max(model.PDBFile.resolution)).scalar()
+        print (resMin, resMax)
+
         sizeMin = 15
         sizeMax = 10000
         # User's values retreiving (if any)
