@@ -59,7 +59,7 @@ def positionsPrinter(length):
     return pos + "\n"
 
 
-@app.route("/results/<PDBid>")
+@app.route("/results/<str:PDBid>/<str:unit>")
 def resultsForOnePDB(PDBid, unit):
     """
     Define the detailed results route
