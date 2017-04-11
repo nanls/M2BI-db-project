@@ -91,16 +91,16 @@ def search_files():
 
         # Retrive corresponding pdbs :
 
-        pdb_list = model.PDBFile.query.filter(and_(
+        PDBfiles_list = model.PDBFile.query.filter(and_(
             model.PDBFile.resolution >= resMin,
             model.PDBFile.resolution <= resMax,
             func.length(model.PDBFile.seq) >= sizeMin,
             func.length(model.PDBFile.seq) <= sizeMax,
         )).all()
-        print (pdb_list)
-        if not pdb_list :
+        print (PDBfiles_list)
+        if not PDBfiles_list :
             return 'no such pdb was founded, you can upload it'
-        elif len(pdb_list)== 1 :
+        elif len(PDBfiles_list)== 1 :
             return 'there is one result'
         else:
             return 'several result -> make searchable array'
