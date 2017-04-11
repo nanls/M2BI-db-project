@@ -73,13 +73,15 @@ def search_by_pdb_id():
 
     if idForm.validate_on_submit() :
         print ('OKKAYYYYYYYYYYYYYYYYYYYYYY')
-        PDBid = idForm.PDBid.data
-        print (PDBid)
         # Creates a list of PDB IDs for which a assignation is wanted
-        PDBid = PDBid.split("\n")
-        # Lancer sur la page de resultats lors d’une requete issue de
-        # l’interrogation (pas encore creee)
-        return 'success search_by_pdb_id'
+        PDBid_list = idForm.PDBid.data.split()
+        PDBfiles_list = [model.PDBFile.query.get(id) for id in PDBid_list if model.PDBFile.query.get(id) is not None]
+        if not PDBfiles_list :
+            return 'no such pdb was founded, you can upload it'
+        elif len(PDBfiles_list)== 1 :
+            return 'there is one result'
+        else:
+            return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
 
 @app.route('/search_files', methods = ['POST'])
