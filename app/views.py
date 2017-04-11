@@ -64,7 +64,8 @@ def resultsForOnePDB(PDBid, unit):
     sequence = pdb.seq#[boundaries.start:boundaries]
     pos = positionsPrinter(len(sequence))
     # Get the phi and psi angles and compute the Ramachandran map
-    angles = model.Angle.query.get(PDBid)
+    angles = pdb.angles.all()
+    print(angles)
     ramachandran.compute_ramachandran_map((angles.phi, angles.psi), unit)
     # Get the annotations and stores them in a dictionary
     annot = {}
