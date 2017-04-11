@@ -50,12 +50,19 @@ def about():
     print(nb_pdbs)
 
     num_P = 0
-    for annotation in model.Annotation.query.all() :
+    for annotation in model.Annotation.query.all():
         num_P += annotation.result.count('P')
     print (num_P)
 
+    mean_resol = 0
+    if nb_pdbs != 0:
+        for pdb in db.session.query(model.PDBFile.resolution):
+            mean_resol += pdb.resolution
+        mean_resol /= nb_pdbs
+    print(mean_resol)
 
-    return flask.render_template('about.html', num_pdb = nb_pdbs, num_P = num_P)
+
+    return flask.render_template('about.html', num_pdb = nb_pdbs, num_P = num_P, mean_resol = mean_resol)
 
 @app.route('/search_by_pdb_id', methods = ['POST'])
 def search_by_pdb_id():
