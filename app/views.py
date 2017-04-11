@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
 import flask
 import ramachandran
 import annot
@@ -65,8 +68,8 @@ def search_by_pdb_id():
         print (PDBid)
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid = PDBid.split("\n")
-        # Lancer sur la page de "resultats lors d’une requete issue de
-        # l’interrogation" (pas encore creee)
+        # Lancer sur la page de resultats lors d’une requete issue de
+        # l’interrogation (pas encore creee)
         return 'success search_by_pdb_id'
     return flask.redirect(flask.url_for("search"), code=302)
 
