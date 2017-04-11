@@ -194,4 +194,3 @@ def insert(filename):
     db.session.add(pross_data)
     db.session.commit()
     return
-
