@@ -144,7 +144,12 @@ def search_by_kw():
             )
         print (PDBfiles_list)
 
-        return 'success search_by_kw'
+        if not PDBfiles_list :
+            return 'no such pdb was founded, you can upload it'
+        elif len(PDBfiles_list)== 1 :
+            return 'there is one result'
+        else:
+            return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
 
 @app.route('/search', methods = ['GET'])
