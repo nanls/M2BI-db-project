@@ -59,7 +59,7 @@ def positionsPrinter(length):
     return pos + "\n"
 
 
-@app.route("/results/<str:PDBid>/<str:unit>")
+@app.route("/results/<string:PDBid>/<string:unit>")
 def resultsForOnePDB(PDBid, unit):
     """
     Define the detailed results route
@@ -73,8 +73,7 @@ def resultsForOnePDB(PDBid, unit):
     ramachandran.compute_ramachandran_map((angles.phi, angles.psi), unit)
     # Get the annotations and stores them in a dictionary
     annot = {}
-    annotations = model.Annotation.select(model.Annotation.pdb_id= \
-        PDBid).execute().all()
+    annotations = pdb.annotations
     for meth in annotations:
         annot["{<:7s}".format(annotations["method"])] = annotations["result"]
     return flask.render_template('resultsForOnePDB.html', \
