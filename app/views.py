@@ -65,8 +65,8 @@ def search_by_pdb_id():
         print (PDBid)
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid = PDBid.split("\n")
-        # Lancer sur la page de "résultats lors d’une requete issue de
-        # l’interrogation" (pas encore créée)
+        # Lancer sur la page de "resultats lors d’une requete issue de
+        # l’interrogation" (pas encore creee)
         return 'success search_by_pdb_id'
     return flask.redirect(flask.url_for("search"), code=302)
 
@@ -91,10 +91,10 @@ def search_files():
             sizeMin = filesForm.sizeMin.data
         if filesForm.sizeMax.data != "":
             sizeMax = filesForm.sizeMin.data
-        # Lancer sur la page de "résultats lors d’une requête issue de
-        # l’interrogation" (pas encore créée)
+        # Lancer sur la page de "resultats lors d’une requete issue de
+        # l’interrogation" (pas encore creee)
 
-        # l’interrogation" (pas encore créée)
+        # l’interrogation" (pas encore creee)
         return 'succes search_files'
     return flask.redirect(flask.url_for("search"), code=302)
 
