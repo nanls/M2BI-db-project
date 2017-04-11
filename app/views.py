@@ -98,7 +98,12 @@ def search_files():
             func.length(model.PDBFile.seq) <= sizeMax,
         )).all()
         print (pdb_list)
-        return 'succes search_files'
+        if not pdb_list :
+            return 'no such pdb was founded, you can upload it'
+        elif len(pdb_list)== 1 :
+            return 'there is one result'
+        else:
+            return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
 
 @app.route('/search_by_kw', methods = ['POST'])
