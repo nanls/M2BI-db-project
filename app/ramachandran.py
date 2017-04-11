@@ -142,7 +142,10 @@ def compute_ramachandran_map(angles, unit="degree"):
     # Changes figure size
     fig.set_size_inches(10.0, 10.0)
     # Saves figures
-    fig.savefig('temp/rama.png', dpi=300)
+    if not os.path.exists('temp'):
+        os.mkdir('temp')
+    name = os.path.basename(pdb_file)[0:4]
+    fig.savefig('temp/' + name + '.png', dpi=300)
 
   
 if __name__ == "__main__":
