@@ -36,11 +36,11 @@ def upload():
 
         # check if the file is already in the db
         check_pdb = db.session.query(model.PDBFile).filter(model.PDBFile.id==pdb_id)
-        check_bool = db.session.query(check_pdb.exists()).scalar
-        print(check_bool)
+        check_bool = db.session.query(check_pdb.exists()).scalar()
+        print('check' + str(check_bool))
 
         # if not, insert data into db :
-        if check_bool:
+        if not check_bool:
             path = pdb_set.path(filename)
             print (path)#TEMP
 
