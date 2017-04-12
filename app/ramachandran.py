@@ -49,13 +49,12 @@ import sys
 ######################################
 
 
-def compute_phi_psi_angles(pdb_file, unit="degree"):
+def compute_phi_psi_angles(pdb_file):
     """Method to compute phi and psi angles of a pdb file in an given
-        unit (radian or degree).
+        unit (radian).
 
     Arguments:
         pdb_file: path of the pdb file
-        unit: unit of degree for phi and psi angles (degree or radian)
 
     Returns:
         phi_angles (numpy.ndarray): array which contains all phi angles
@@ -68,22 +67,17 @@ def compute_phi_psi_angles(pdb_file, unit="degree"):
     pdb = md.load_pdb(pdb_file)
     phi_angles = md.compute_phi(pdb)
     psi_angles = md.compute_psi(pdb)
-    if unit == "degree":
-        # conserve and convert radian angle to degree
-        phi_angles = np.rad2deg(phi_angles[::][1][0])
-        psi_angles = np.rad2deg(psi_angles[::][1][0])
 
-    elif unit == "radian":
-        # conserve radian degree
-        phi_angles = phi_angles[::][1][0]
-        psi_angles = psi_angles[::][1][0]
+    # conserve radian degree
+    phi_angles = phi_angles[::][1][0]
+    psi_angles = psi_angles[::][1][0]
 
     # right phi angle with right psi_angles
     # phi angle position n and psi angle position n+1
     return phi_angles[0:-1], psi_angles[1:]
 
 
-def compute_ramachandran_map(pdb_file, angles, unit="degree"):
+def compute_ramachandran_map(pdb_file, angles, unit="radian"):
     """Method to generate a ramachandran map with a given unit scale
         (radian or degree).
 
@@ -102,6 +96,9 @@ def compute_ramachandran_map(pdb_file, angles, unit="degree"):
     x = angles[0]
     y = angles[1]
     if unit == "degree":
+        # conserve and convert radian angle to degree
+        x = np.rad2deg(x)
+        y = np.rad2deg(y)
         x_label_in = "Phi(deg)"
         y_label_in = "Psi(deg)"
         plt.plot(x, y, ".")
@@ -162,9 +159,9 @@ if __name__ == "__main__":
             sys.exit("you need to specify for the angle unit 'degree'" +
                      " or 'radian'\n")
     else:
-        angle_unit = "degree"
+        angle_unit = "radian"
     try:
-        angles = compute_phi_psi_angles(pdb_file, angle_unit)
+        angles = compute_phi_psi_angles(pdb_file)
         print(angles)
         path_map = compute_ramachandran_map(pdb_file, angles, angle_unit)
         print(path_map)
