@@ -34,22 +34,26 @@ def upload():
   
         pdb_id = filename[0:4]
 
-        # TODO : check if the file is already in the db
+        # check if the file is already in the db
+        check_pdb = db.session.query(model.PDBFile).filter(model.PDBFile.id==pdb_id)
+        check_bool = db.session.query(check_pdb.exists()).scalar
+        print(check_bool)
 
         # if not, insert data into db :
-        path = pdb_set.path(filename)
-        print (path)#TEMP
+        if check_bool:
+            path = pdb_set.path(filename)
+            print (path)#TEMP
 
-        current_pdb = model.PDBFile(path)
-        dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
-        current_pdb.annotations.append(dssp_data)
-        pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
-        current_pdb.annotations.append(pross_data)
-        #TODO : header+name+length...
+            current_pdb = model.PDBFile(path)
+            dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
+            current_pdb.annotations.append(dssp_data)
+            pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
+            current_pdb.annotations.append(pross_data)
+            #TODO : header+name+length...
 
-        #Add all annotations into db
-        db.session.add(current_pdb)
-        db.session.commit()
+            #Add all annotations into db
+            db.session.add(current_pdb)
+            db.session.commit()
 
         #TODO : move next line into a future display function !!!!!!
         #ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
