@@ -27,20 +27,18 @@ def upload():
     form  = UploadForm()
     if form.validate_on_submit():
 
-        filename = pdb_set.save(
-            storage = form.pdb_file.data, # The uploaded file to save
-        )
-        print (filename)
-  
-        pdb_id = filename[0:4]
-
         # check if the file is already in the db
-        check_pdb = db.session.query(model.PDBFile).filter(model.PDBFile.id==pdb_id)
+        check_pdb = db.session.query(model.PDBFile).filter(model.PDBFile.id==form.pdb_file.data.filename[0:4])
         check_bool = db.session.query(check_pdb.exists()).scalar()
         print('check' + str(check_bool))
 
         # if not, insert data into db :
         if not check_bool:
+            filename = pdb_set.save(
+            storage = form.pdb_file.data, # The uploaded file to save
+            )
+            print (filename)
+  
             path = pdb_set.path(filename)
             print (path)#TEMP
 
