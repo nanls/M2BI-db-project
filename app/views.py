@@ -49,9 +49,9 @@ def positionsPrinter(length):
         length of the sequence to consider.
     """
     numbers = range(10, length + 1, 10)
-    pos = ''
+    pos = "{:<9d}".format(1)
     for number in numbers:
-        pos += "{:>10d}".format(number )
+        pos += "{:<10d}".format(number)
     return pos + "\n"
 
 @app.route("/results/<string:PDBid>/<string:unit>")
