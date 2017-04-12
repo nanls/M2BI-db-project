@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
 import flask
 import ramachandran
 import annot
 from app import app, pdb_set, db
+from sqlalchemy import func
 import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
 from sqlalchemy import and_, func
@@ -38,6 +42,29 @@ def upload():
     return flask.render_template('upload.html', form = form)
 
 
+@app.route("/about")
+def about():
+    """
+    Define the about route
+    """
+    nb_pdbs = db.session.query(func.count(model.PDBFile.id)).scalar()
+    print(nb_pdbs)
+
+    num_P = 0
+    for annotation in model.Annotation.query.all():
+        num_P += annotation.result.count('P')
+    print (num_P)
+
+    mean_resol = db.session.query(func.avg(model.PDBFile.resolution)).scalar()
+    print(mean_resol)
+
+    mean_len = db.session.query(func.avg(func.length(model.PDBFile.seq))).scalar()
+    print(mean_len)
+
+
+    return flask.render_template('about.html', num_pdb = nb_pdbs,
+                                 num_P = num_P, mean_resol = mean_resol,
+                                 mean_len = mean_len)
 
 @app.route('/search_by_pdb_id', methods = ['POST'])
 def search_by_pdb_id():
@@ -104,6 +131,7 @@ def search_files():
             return 'there is one result'
         else:
             return 'several result -> make searchable array'
+
     return flask.redirect(flask.url_for("search"), code=302)
 
 @app.route('/search_by_kw', methods = ['POST'])
