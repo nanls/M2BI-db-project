@@ -42,6 +42,45 @@ def upload():
     return flask.render_template('upload.html', form = form)
 
 
+def positionsPrinter(length):
+    """
+    Create a string containing the position numbers in a way that they will be
+    aligned with the sequence.
+    ARGUMENT:
+        length of the sequence to consider.
+    """
+    numbers = range(10, length + 1, 10)
+    pos = "{:<9d}".format(1)
+    for number in numbers:
+        pos += "{:<10d}".format(number)
+    return pos + "\n"
+
+@app.route("/results/<string:PDBid>/<string:unit>")
+def resultsForOnePDB(PDBid, unit):
+    """
+    Define the detailed results route
+    """
+    pdb = model.PDBFile.query.get(PDBid)
+    #boundaries = model.Chain.query.get(PDBid)
+    sequence = pdb.seq#[boundaries.start:boundaries]
+    pos = positionsPrinter(len(sequence))
+    # Get the phi and psi angles and compute the Ramachandran map
+    angles_phi, angles_psi = zip(*[ (angle.phi, angle.psi) for angle in  pdb.angles.all()])
+    # unzip list of tuple of (phi ,psi) for each angle
+    print ( angles_phi, angles_psi )
+
+    path = ramachandran.compute_ramachandran_map((angles_phi, angles_psi), unit)
+    # Get the annotations and stores them in a dictionary
+    annot = {}
+    annotations = pdb.annotations
+    for meth in annotations:
+        annot["{<:7s}".format(annotations["method"])] = annotations["result"]
+    return flask.render_template('resultsForOnePDB.html', \
+        ramap = path, PDBid = PDBid, \
+        PDBsum="http://www.rcsb.org/pdb/explore/explore.do?structureId="+PDBid, \
+        positions = pos, sequence = sequence, annotations=annot)
+
+
 @app.route("/about")
 def about():
     """
