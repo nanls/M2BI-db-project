@@ -77,11 +77,12 @@ def compute_phi_psi_angles(pdb_file):
     return phi_angles[0:-1], psi_angles[1:]
 
 
-def compute_ramachandran_map(pdb_file, angles, unit="radian"):
+def compute_ramachandran_map(pdb_id, angles, unit="radian"):
     """Method to generate a ramachandran map with a given unit scale
         (radian or degree).
 
         Arguments:
+            pdb_id : id of the pdb in the database
             angles: tuple which contains
             phi_angles (numpy.ndarray): array which contains all phi angles
             (numpy.float32).
@@ -145,10 +146,9 @@ def compute_ramachandran_map(pdb_file, angles, unit="radian"):
 
     if not os.path.exists('temp'):
         os.mkdir('temp')
-    name = os.path.basename(pdb_file)[0:4]
-    fig.savefig('temp/' + name + '.png', dpi=300)
+    fig.savefig('temp/' + pdb_id + '.png', dpi=300)
 
-    return 'temp/' + name + '.png'
+    return 'temp/' + pdb_id + '.png'
 
   
 if __name__ == "__main__":
@@ -163,7 +163,9 @@ if __name__ == "__main__":
     try:
         angles = compute_phi_psi_angles(pdb_file)
         print(angles)
-        path_map = compute_ramachandran_map(pdb_file, angles, angle_unit)
+        pdb_id = pdb_file[-8:-4]
+        print(pdb_id)
+        path_map = compute_ramachandran_map(pdb_id, angles, angle_unit)
         print(path_map)
     except:
         sys.exit("the specified file is not openable or not" +
