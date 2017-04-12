@@ -8,7 +8,7 @@ from app import app, pdb_set, db
 from sqlalchemy import func
 import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
-from sqlalchemy import or_
+from sqlalchemy import or_, and_, func
 
 @app.route("/")
 def index():
@@ -92,25 +92,46 @@ def search_files():
     if filesForm.validate_on_submit():
         print (filesForm.resMin.data)
 
-         # Default values definitions
-        resMin = 0.0
-        resMax = 10000.0
-        sizeMin = 15
-        sizeMax = 10000
         # User's values retreiving (if any)
-        if filesForm.resMin.data != "":
+        # or default values definitions
+        if not filesForm.resMin.data:
+            resMin = db.session.query(db.func.min(model.PDBFile.resolution)).scalar()
+        else :
             resMin = filesForm.resMin.data
-        if filesForm.resMax.data != "":
-            resMax = filesForm.resMax.data
-        if filesForm.sizeMin.data != "":
-            sizeMin = filesForm.sizeMin.data
-        if filesForm.sizeMax.data != "":
-            sizeMax = filesForm.sizeMin.data
-        # Lancer sur la page de "resultats lors d’une requete issue de
-        # l’interrogation" (pas encore creee)
 
-        # l’interrogation" (pas encore creee)
-        return 'succes search_files'
+        if not filesForm.resMax.data:
+            resMax = db.session.query(db.func.max(model.PDBFile.resolution)).scalar()
+        else :
+            resMax = filesForm.resMax.data
+        print (resMin, resMax)
+
+        if not filesForm.sizeMin.data:
+            sizeMin = 15
+        else :
+            sizeMin = filesForm.sizeMin.data
+
+        if not filesForm.sizeMax.data:
+            sizeMax = 10000
+        else :
+            sizeMax = filesForm.sizeMax.data
+        print (sizeMin, sizeMax)
+
+        # Retrive corresponding pdbs :
+
+        PDBfiles_list = model.PDBFile.query.filter(and_(
+            model.PDBFile.resolution >= resMin,
+            model.PDBFile.resolution <= resMax,
+            func.length(model.PDBFile.seq) >= sizeMin,
+            func.length(model.PDBFile.seq) <= sizeMax,
+        )).all()
+        print (PDBfiles_list)
+        if not PDBfiles_list :
+            return 'no such pdb was founded, you can upload it'
+        elif len(PDBfiles_list)== 1 :
+            return 'there is one result'
+        else:
+            return 'several result -> make searchable array'
+
     return flask.redirect(flask.url_for("search"), code=302)
 
 @app.route('/search_by_kw', methods = ['POST'])

@@ -8,7 +8,7 @@ automatically.
 from flask_wtf import FlaskForm
 from wtforms.fields import SubmitField, RadioField, TextAreaField, DecimalField, IntegerField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-
+from wtforms.validators import optional
 import app
 
 
@@ -41,11 +41,11 @@ class SearchFilesForm(FlaskForm):
 	criteria.
 	"""
 	# Resolution?
-	resMin = DecimalField('Minimum resolution', places = 2, rounding = None)
-	resMax = DecimalField('Maximum resolution', places = 2, rounding = None)
+	resMin = DecimalField('Minimum resolution', places = 2, rounding = None, validators = [optional()])
+	resMax = DecimalField('Maximum resolution', places = 2, rounding = None, validators = [optional()])
 	# Size?
-	sizeMin = IntegerField('Minimum size')
-	sizeMax = IntegerField('Maximum size')
+	sizeMin = IntegerField('Minimum size',  validators = [optional()])
+	sizeMax = IntegerField('Maximum size',  validators = [optional()])
 	submit = SubmitField('Display list of PDB id in database', render_kw={"class": "btn btn-info btn-lg", "id": "submit-button"})
 
 
