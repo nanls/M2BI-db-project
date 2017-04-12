@@ -95,6 +95,9 @@ def compute_ramachandran_map(pdb_file, angles, unit="degree"):
             (numpy.float32).
             unit: unit of degree for phi and psi angles (degree or radian)
 
+        Returns:
+            path of Ramachandran map computed
+
     """
     x = angles[0]
     y = angles[1]
@@ -148,6 +151,8 @@ def compute_ramachandran_map(pdb_file, angles, unit="degree"):
     name = os.path.basename(pdb_file)[0:4]
     fig.savefig('temp/' + name + '.png', dpi=300)
 
+    return 'temp/' + name + '.png'
+
   
 if __name__ == "__main__":
     pdb_file = sys.argv[1]
@@ -161,7 +166,8 @@ if __name__ == "__main__":
     try:
         angles = compute_phi_psi_angles(pdb_file, angle_unit)
         print(angles)
-        compute_ramachandran_map(pdb_file, angles, angle_unit)
+        path_map = compute_ramachandran_map(pdb_file, angles, angle_unit)
+        print(path_map)
     except:
         sys.exit("the specified file is not openable or not" +
                  " a pdb file or just not specified\n")
