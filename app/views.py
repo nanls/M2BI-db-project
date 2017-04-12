@@ -8,7 +8,7 @@ from app import app, pdb_set, db
 from sqlalchemy import func
 import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
-from sqlalchemy import and_, func
+from sqlalchemy import or_, and_, func
 
 @app.route("/")
 def index():
@@ -178,7 +178,38 @@ def search_by_kw():
     keywdForm = SearchByKeyWD()
     if keywdForm.validate_on_submit():
         keywd = keywdForm.keywd.data
-        return 'success search_by_kw'
+        print(keywd)
+
+        keywds_list = keywd.split()
+        # was extracted from header :
+        #keywords, name, head,  deposition_date,  release_date, structure_method
+        #resolution, structure_reference, journal_reference, author, compound
+
+        PDBfiles_list = []
+        for kw in keywds_list :
+            PDBfiles_list.extend(
+                model.PDBFile.query.filter(or_(
+                    model.PDBFile.keywords.contains(kw),
+                    model.PDBFile.name.contains(kw),
+                    model.PDBFile.head.contains(kw),
+                    model.PDBFile.deposition_date.contains(kw),
+                    model.PDBFile.release_date.contains(kw),
+                    model.PDBFile.structure_method.contains(kw),
+                    model.PDBFile.resolution.contains(kw),
+                    model.PDBFile.structure_reference.contains(kw),
+                    model.PDBFile.journal_reference.contains(kw),
+                    model.PDBFile.author.contains(kw),
+                    model.PDBFile.compound.contains(kw)
+                )).all()
+            )
+        print (PDBfiles_list)
+
+        if not PDBfiles_list :
+            return 'no such pdb was founded, you can upload it'
+        elif len(PDBfiles_list)== 1 :
+            return 'there is one result'
+        else:
+            return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
 
 @app.route('/search', methods = ['GET'])
