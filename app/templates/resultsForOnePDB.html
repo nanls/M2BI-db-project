@@ -3,20 +3,19 @@
 {% block title %}Results{% endblock %}
 
 {% block content %}
-    {% from "_formhelpers.html" import render_field %}
     <div id="results">
-        <pre>{{ PDBid }}   </pre>
-        <a href="{{ PDBsum }}">[PDBsum]</a>
-        <pre>\nPOS    {{ positions }}</pre>
-        <pre>SEQ    {{ sequence }}\n</pre>
-        {% for meth, annot in _annotations.iteritems() %}
-            <pre>{{ meth }}{{ annot }}\n</pre>
+        <pre>{{ PDB.id }}</pre>
+        <a href="{{ 'http://www.rcsb.org/pdb/explore/explore.do?structureId='+PDB.id }}">[PDBsum]</a>
+        <pre>
+                 {{ positions }}
+        sequence {{ PDB.seq }}
+        {% for anno in PDB.annotations.all() %}
+            {{ anno.method.ljust(9) }}{{ anno.result }}
         {% endfor %}
+        </pre>
     </div>
     <figure>
         <img src="{{ ramap }}" title="Ramachandran map">
         <figcaption>Ramachandran map</figcaption>
     </figure>
 {% endblock %}
-
-
