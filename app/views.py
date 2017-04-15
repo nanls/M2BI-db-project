@@ -35,7 +35,7 @@ def upload():
         # insert data contains in pdb into db :
         if not check_bool:
             filename = pdb_set.save(storage = form.pdb_file.data,) # The uploaded file to save
-  
+
             path = pdb_set.path(filename)
 
             # compute annotation
