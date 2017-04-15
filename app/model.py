@@ -68,7 +68,10 @@ class PDBFile(db.Model):
         filepath : string
             path to the pdb file
         """
-        
+
+        #-----
+        # save id extracted from path :
+        self.id = filepath[-8:-4]
 
         #-----
         # init parser :
@@ -84,10 +87,10 @@ class PDBFile(db.Model):
         self.release_date = struct.header['release_date']
         self.structure_method = struct.header['structure_method']
         self.resolution = struct.header['resolution']
-        self.structure_reference = struct.header['structure_reference']
+        self.structure_reference = str(struct.header['structure_reference'])
         self.journal_reference = struct.header['journal_reference']
         self.author = struct.header['author']
-        self.compound = struct.header['compound']
+        self.compound = str(struct.header['compound'])
 
         #-----
         # Get the sequence and the angles
@@ -96,13 +99,15 @@ class PDBFile(db.Model):
         ppb = PDB.CaPPBuilder()
 
         #The sequence of each polypeptide can then easily be obtained from the Polypeptide objects :
-        for pp in ppb.build_peptides(struct):
+        self.seq = ""
+        for pp, chain in zip(ppb.build_peptides(struct), struct.get_chains()) :
             print (pp)
 
-            seq = pp.get_sequence()
+            seq = str(pp.get_sequence())
             # The sequence is represented as a Biopython Seq object,
             # and its alphabet is defined by a ProteinAlphabet object.
             print (seq)
+            self.seq += seq
 
             # Get the boundary of the peptide
             # using residu id
@@ -115,6 +120,8 @@ class PDBFile(db.Model):
             end = pp[-1].get_id()[1]
             print (end)
 
+            self.chains.append(Chain(chain.id, self.id, start, end))
+
 
             # Get phi psi angle
             angles = pp.get_phi_psi_list()
@@ -124,6 +131,9 @@ class PDBFile(db.Model):
             # - No phi for residue 0
             # - No psi for last residue
             print(angles)
+
+        for (atom_idx, (phi, psi)) in enumerate(angles) :
+            self.angles.append(Angle(self.id, atom_idx, phi, psi))
 
 class Chain(db.Model):
     """
@@ -223,5 +233,6 @@ class Angle(db.Model):
             the string of annotation
         """
         self.pdb_id = pdb_id
-        self.method = method
-        self.result = result
+        self.atom_idx = atom_idx
+        self.phi = phi
+        self.psi = psi

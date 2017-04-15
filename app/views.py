@@ -4,11 +4,13 @@
 import flask
 import ramachandran
 import annot
+import model
 from app import app, pdb_set, db
 from sqlalchemy import func
 import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
 from sqlalchemy import or_, and_, func
+
 
 @app.route("/")
 def index():
@@ -26,17 +28,26 @@ def upload():
     form  = UploadForm()
     if form.validate_on_submit():
 
-        filename = pdb_set.save(
-            storage = form.pdb_file.data, # The uploaded file to save
-        )
-        print (filename)
-        path = pdb_set.path(filename)
-        print (path)
-        angles = ramachandran.compute_phi_psi_angles(path, form.angle_unit.data) #TEMP
-        print(angles) #TEMP
-        ramachandran.compute_ramachandran_map(angles, form.angle_unit.data) #TEMP
+        # check if the file already exist in the db
+        check_pdb = db.session.query(model.PDBFile).filter(model.PDBFile.id==form.pdb_file.data.filename[0:4])
+        check_bool = db.session.query(check_pdb.exists()).scalar()
 
-        insert(filename)
+        # insert data contains in pdb into db :
+        if not check_bool:
+            filename = pdb_set.save(storage = form.pdb_file.data,) # The uploaded file to save
+  
+            path = pdb_set.path(filename)
+
+            # compute annotation
+            current_pdb = model.PDBFile(path)
+            dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
+            current_pdb.annotations.append(dssp_data)
+            pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
+            current_pdb.annotations.append(pross_data)
+
+            #add all annotations into db
+            db.session.add(current_pdb)
+            db.session.commit()
 
         return "success"
     return flask.render_template('upload.html', form = form)
@@ -87,18 +98,17 @@ def about():
     Define the about route
     """
     nb_pdbs = db.session.query(func.count(model.PDBFile.id)).scalar()
-    print(nb_pdbs)
 
+    # count the number of proline in the db
     num_P = 0
     for annotation in model.Annotation.query.all():
         num_P += annotation.result.count('P')
-    print (num_P)
 
+    # compute mean resolution of pdbs in the db
     mean_resol = db.session.query(func.avg(model.PDBFile.resolution)).scalar()
-    print(mean_resol)
 
+    # compute mean length of protein's sequence contains in the db
     mean_len = db.session.query(func.avg(func.length(model.PDBFile.seq))).scalar()
-    print(mean_len)
 
 
     return flask.render_template('about.html', num_pdb = nb_pdbs,
@@ -108,11 +118,8 @@ def about():
 @app.route('/search_by_pdb_id', methods = ['POST'])
 def search_by_pdb_id():
     idForm = SearchByPDBidForm()
-    print (idForm)
-    print (idForm.errors)
 
     if idForm.validate_on_submit() :
-        print ('OKKAYYYYYYYYYYYYYYYYYYYYYY')
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid_list = idForm.PDBid.data.split()
         PDBfiles_list = [model.PDBFile.query.get(id) for id in PDBid_list if model.PDBFile.query.get(id) is not None]
@@ -129,7 +136,6 @@ def search_files():
     filesForm = SearchFilesForm()
 
     if filesForm.validate_on_submit():
-        print (filesForm.resMin.data)
 
         # User's values retreiving (if any)
         # or default values definitions
@@ -221,26 +227,3 @@ def search():
     filesForm = SearchFilesForm()
     keywdForm = SearchByKeyWD()
     return flask.render_template('search.html', SearchByPDBidForm = idForm, SearchFilesForm = filesForm, SearchByKeyWDForm = keywdForm)
-
-
-def insert(filename):
-    """
-    Insertion of computed data into database
-    Arguments :
-    -----------
-    filename : string
-        name of the pdb file
-    Return :
-    --------
-    None
-    """
-    #TODO !!!!!!!!!!! add angles PHI & PSI AND header+name+length...
-    dssp_data = model.Annotation(pdb_id=filename[-8:-4], method="dssp", result=annot.dsspAnnot(path))
-    #filename = "path/3xal.pdb", filename[-8:-4] = "3xal"
-    pross_data = model.Annotation(pdb_id=filename[-8:-4], method="pross", result=annot.prossAnnot(path))
-
-    #Add all annotations into db
-    db.session.add(dssp_data)
-    db.session.add(pross_data)
-    db.session.commit()
-    return
