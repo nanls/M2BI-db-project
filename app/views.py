@@ -84,7 +84,7 @@ def resultsForOnePDB(PDBid, unit):
     for meth in annotations:
         annot["{<:7s}".format(annotations["method"])] = annotations["result"]
     return flask.render_template('resultsForOnePDB.html',
-        ramap = paths, PDB = pdb,
+        ramapaths = paths, PDB = pdb,
         positions = pos)
 
 @app.route("/<path:path>")
