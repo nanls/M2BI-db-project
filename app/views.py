@@ -75,19 +75,15 @@ def resultsForOnePDB(PDBid, unit):
     #boundaries = model.Chain.query.get(PDBid)
     sequence = pdb.seq#[boundaries.start:boundaries]
     pos = positionsPrinter(len(sequence))
-    # Get the phi and psi angles and compute the Ramachandran map
-    angles_phi, angles_psi = zip(*[ (angle.phi, angle.psi) for angle in  pdb.angles.all()])
-    # unzip list of tuple of (phi ,psi) for each angle
-    print ( angles_phi, angles_psi )
 
-    path = ramachandran.compute_ramachandran_map((angles_phi, angles_psi), unit)
+    paths = ramachandran.compute_ramachandran_map(pdb, unit)
     # Get the annotations and stores them in a dictionary
     annot = {}
     annotations = pdb.annotations
     for meth in annotations:
         annot["{<:7s}".format(annotations["method"])] = annotations["result"]
     return flask.render_template('resultsForOnePDB.html', \
-        ramap = path, PDBid = PDBid, \
+        ramap = paths, PDBid = PDBid, \
         PDBsum="http://www.rcsb.org/pdb/explore/explore.do?structureId="+PDBid, \
         positions = pos, sequence = sequence, annotations=annot)
 
