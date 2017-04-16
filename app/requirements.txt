@@ -16,4 +16,3 @@ SQLAlchemy==1.1.5
 Werkzeug==0.11.15
 numpy==1.12.0
 matplotlib==2.0.0
-mdtraj==1.8.0
