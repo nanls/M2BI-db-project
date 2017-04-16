@@ -1,0 +1,64 @@
+{% extends "skeleton.html" %}
+
+{% block title %}Several PDB correspond to your query {% endblock %}
+
+{% block content %}
+    <table id="table_id" class="display">
+        <!-- class = "display" -> row color alternate, increasing lisibility -->
+
+        <!-- Col names -->
+        <!-- use col names to set table header : -->
+        <thead>
+            <tr>
+                {%for e in colnames%}
+                    <th>{{e}}</th>
+                {%endfor%}
+            </tr>
+        </thead>
+        <!-- Do the same to set the table footer : -->
+        <tfoot>
+            <tr>
+                {%for e in colnames%}
+                    <th>{{e}}</th>
+                {%endfor%}
+            </tr>
+        </tfoot>
+
+        <!-- Fill table body with data ['PDB', 'Chain', 'Title', 'Length', 'Resolution', 'PPII (n), PPII (%)']-->
+        <tbody>
+            {%for data in rows%}
+                <tr>
+                    <td>
+                        <a  href="#">
+                            {{data[0]}} <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>
+                    </td> <!-- PDB id -->
+                    <td>{{data[1]}}</td> <!-- chain -->
+                    <td>{{data[2]}}</td> <!-- Title -->
+                    <td>{{data[3]}}</td> <!-- Length -->
+                    <td>{{data[5]}}</td> <!-- Resolution -->
+                    <td>{{data[6]}}</td> <!-- PPII (n)-->
+                    <td>{{data[7]}}</td> <!-- PPII (%)-->
+                </tr>
+            {%endfor%}
+        </tbody>
+
+    </table>
+
+{% endblock %}
+
+
+
+
+{% block imports %}
+    {{super()}}
+    <link  href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#browseTable').DataTable();
+    } );
+    </script>
+
+{% endblock %}
