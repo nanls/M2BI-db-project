@@ -1,3 +1,4 @@
+"""The application is lauched here."""
 from app import app
 import views
 
