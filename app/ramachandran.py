@@ -37,11 +37,14 @@
 # IMPORT
 ######################################
 
+from app import db
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import mdtraj as md
+import model
 import os
+from sqlalchemy import or_, and_, func
 import sys
 
 ######################################
@@ -77,25 +80,29 @@ def compute_phi_psi_angles(pdb_file):
     return phi_angles[0:-1], psi_angles[1:]
 
 
-def compute_ramachandran_map(pdb_id, angles, unit="radian"):
+def compute_ramachandran_map(pdb_id, method, unit="radian"):
     """Method to generate a ramachandran map with a given unit scale
         (radian or degree).
 
         Arguments:
             pdb_id : id of the pdb in the database
             angles: tuple which contains
-            phi_angles (numpy.ndarray): array which contains all phi angles
-            (numpy.float32).
-            psi_angles (numpy.ndarray): array which contains all psi angles
-            (numpy.float32).
-            unit: unit of degree for phi and psi angles (degree or radian)
 
         Returns:
             path of Ramachandran map computed
 
     """
-    x = angles[0]
-    y = angles[1]
+    if method not in ['dssp', 'pross']:
+        sys.exit("Method of annotation specifeid doesn't exist.\n")
+    # get annotation
+    annotation = db.session.query(model.Annotation.result).filter(and_(model.Annotation.pdb_id==pdb_id,
+                                                                       model.Annotation.method==method))
+    print(annotation.scalar())
+    # get angles
+    angles = db.session.query(model.Angle).filter(model.Angle.pdb_id==pdb_id)
+    print(len(angles.all()))
+    x = [angles[i].phi for i in range(1,len(angles.all())-2)]
+    y = [angles[i].psi for i in range(1,len(angles.all())-2)]
     if unit == "degree":
         # conserve and convert radian angle to degree
         x = np.rad2deg(x)
@@ -146,9 +153,10 @@ def compute_ramachandran_map(pdb_id, angles, unit="radian"):
 
     if not os.path.exists('temp'):
         os.mkdir('temp')
-    fig.savefig('temp/' + pdb_id + '.png', dpi=300)
 
-    return 'temp/' + pdb_id + '.png'
+    fig.savefig('temp/' + pdb_id + '_' + method + '.png', dpi=300)
+
+    return 'temp/' + pdb_id + '_' + method + '.png'
 
   
 if __name__ == "__main__":
@@ -165,10 +173,8 @@ if __name__ == "__main__":
         print(angles)
         pdb_id = pdb_file[-8:-4]
         print(pdb_id)
-        path_map = compute_ramachandran_map(pdb_id, angles, angle_unit)
-        print(path_map)
     except:
         sys.exit("the specified file is not openable or not" +
                  " a pdb file or just not specified\n")
-
-   
+    path_map = compute_ramachandran_map(pdb_id, "pross", angle_unit)
+    print(path_map)
