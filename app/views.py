@@ -80,11 +80,20 @@ def resultsForOnePDB(PDBid, unit):
     print ( angles_phi, angles_psi )
 
     path = ramachandran.compute_ramachandran_map(pdb.id, (angles_phi, angles_psi), unit)
+    print(path)
+
     return flask.render_template('resultsForOnePDB.html',
         ramap = path,
         PDB = pdb,
         positions = pos )
 
+@app.route("/<path:path>")
+def get_file(path):
+    """
+    Serve file at the given path
+    """
+    print (path)
+    return flask.send_file( path )
 
 @app.route("/about")
 def about():
