@@ -4,14 +4,13 @@
 
 {% block content %}
     <div id="results">
-        <pre>{{ PDB.id }}</pre>
-        <a href="{{ 'http://www.rcsb.org/pdb/explore/explore.do?structureId='+PDB.id }}">[PDBsum]</a>
         <pre>
-                 {{ positions }}
-        sequence {{ PDB.seq }}
-        {% for anno in PDB.annotations.all() %}
-            {{ anno.method.ljust(9) }}{{ anno.result }}
-        {% endfor %}
+{{ PDB.id }} <a href="{{ 'http://www.rcsb.org/pdb/explore/explore.do?structureId='+PDB.id }}">[PDBsum]</a>
+POS      {{ positions }}
+SEQ      {{ PDB.seq }}
+{% for anno in PDB.annotations.all() %}
+{{ anno.method.ljust(9) }}{{ anno.result }}
+{% endfor %}
         </pre>
     </div>
     <figure>
