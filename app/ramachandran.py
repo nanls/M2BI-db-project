@@ -64,11 +64,11 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
 
     """
     path = []
-
-    for method in ['dssp', 'pross']:
+    methods =  db.session.query(model.Annotation.method).group_by(model.Annotation.method).all()
+    for method in methods:
         # get annotation
         annotation = db.session.query(model.Annotation.result).filter(and_(model.Annotation.pdb_id==pdb_id,
-                                                                           model.Annotation.method==method))
+                                                                           model.Annotation.method==method.method))
         print(annotation.scalar())
         # get angles
         angles = db.session.query(model.Angle).filter(model.Angle.pdb_id==pdb_id)
@@ -126,8 +126,8 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         if not os.path.exists('temp'):
             os.mkdir('temp')
 
-        fig.savefig('temp/' + pdb_id + '_' + method + '.png', dpi=300)
-        path.append('temp/' + pdb_id + '_' + method + '.png')
+        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=300)
+        path.append('temp/' + pdb_id + '_' + method.method + '.png')
 
     return path
 
