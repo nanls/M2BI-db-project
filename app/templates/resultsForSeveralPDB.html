@@ -33,12 +33,9 @@
                             {{data[0]}} <span class="glyphicon glyphicon-eye-open"></span>
                         </a>
                     </td> <!-- PDB id -->
-                    <td>{{data[1]}}</td> <!-- chain -->
-                    <td>{{data[2]}}</td> <!-- Title -->
-                    <td>{{data[3]}}</td> <!-- Length -->
-                    <td>{{data[5]}}</td> <!-- Resolution -->
-                    <td>{{data[6]}}</td> <!-- PPII (n)-->
-                    <td>{{data[7]}}</td> <!-- PPII (%)-->
+                    <td>{{data[1]}}</td> <!-- Title -->
+                    <td>{{data[2]}}</td> <!-- Length -->
+                    <td>{{data[3]}}</td> <!-- Resolution -->
                 </tr>
             {%endfor%}
         </tbody>
@@ -57,7 +54,7 @@
 
     <script>
     $(document).ready(function() {
-        $('#browseTable').DataTable();
+        $('#table_id').DataTable();
     } );
     </script>
 
