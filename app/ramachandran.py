@@ -133,7 +133,9 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
 
   
 if __name__ == "__main__":
-    pdb_file = sys.argv[1]
+    if len(sys.argv) == 1:
+        sys.exit("a pdb id should be specified")
+    pdb_id = sys.argv[1]
     if len(sys.argv) > 2:
         angle_unit = sys.argv[2]
         if angle_unit not in ["degree", "radian"]:
@@ -141,11 +143,5 @@ if __name__ == "__main__":
                      " or 'radian'\n")
     else:
         angle_unit = "radian"
-    try:
-        pdb_id = pdb_file[-8:-4]
-        print(pdb_id)
-    except:
-        sys.exit("the specified file is not openable or not" +
-                 " a pdb file or just not specified\n")
     path_map = compute_ramachandran_map(pdb_id, angle_unit)
     print(path_map)
