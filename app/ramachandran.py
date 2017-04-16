@@ -43,7 +43,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import model
 import os
+import pandas as pd
 from sqlalchemy import or_, and_, func
+import seaborn as sns
 import sys
 
 ######################################
@@ -63,25 +65,46 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
             path of Ramachandran map computed
 
     """
+    #color_ss = {'H': 'red', 'B': 'green', 'C': 'grey', 'P': 'blue'} 
     path = []
     methods =  db.session.query(model.Annotation.method).group_by(model.Annotation.method).all()
     for method in methods:
         # get annotation
         annotation = db.session.query(model.Annotation.result).filter(and_(model.Annotation.pdb_id==pdb_id,
                                                                            model.Annotation.method==method.method))
-        print(annotation.scalar())
+        annotation = annotation.scalar()
+        annotation = list(annotation[1:len(annotation)-1])
+        print(annotation)
+
+
+    #    color = []
+    #    for i in range(1,len(annotation)-1):
+    #        try:
+    #            color.append(color_ss[annotation[i]])
+    #        except:
+    #            color.append('black')
+
         # get angles
         angles = db.session.query(model.Angle).filter(model.Angle.pdb_id==pdb_id)
-        print(len(angles.all()))
-        x = [angles[i].phi for i in range(1,len(angles.all())-2)]
-        y = [angles[i].psi for i in range(1,len(angles.all())-2)]
+        phi = [angles[i].phi for i in range(1,len(angles.all())-1)]
+        psi = [angles[i].psi for i in range(1,len(angles.all())-1)]
+
+        if unit == "degree":
+            phi = np.rad2deg(phi)
+            psi = np.rad2deg(psi)
+        # create a dataframe
+        try:
+            df = pd.DataFrame(dict(phi=phi, psi=psi, color=annotation))
+        except:
+            continue
+        print(df)
+
         if unit == "degree":
             # conserve and convert radian angle to degree
-            x = np.rad2deg(x)
-            y = np.rad2deg(y)
             x_label_in = "Phi(deg)"
             y_label_in = "Psi(deg)"
-            plt.plot(x, y, ".")
+            #plt.plot(x, y, ".")
+            sns.lmplot('phi', 'psi', data=df, hue='color', fit_reg=False)
             # Sets x axis limits
             plt.xlim(-180, 180)
             # Sets y axis limits
@@ -100,7 +123,8 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         elif unit == "radian":
             x_label_in = "Phi(rad)"
             y_label_in = "Psi(rad)"
-            plt.plot(x, y, ".")
+            #plt.plot(x, y, ".")
+            sns.lmplot('phi', 'psi', data=df, hue='color', fit_reg=False)
             # Sets x axis limits
             plt.xlim(-3.14, 3.14)
             # Sets y axis limits
