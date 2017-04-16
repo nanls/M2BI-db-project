@@ -12,8 +12,8 @@ def dsspAnnot(pdb):
 	ARGUMENT:
 		pdb: the name of the pdb file.
 	RETURNS:
-		a string containing the corresponding annotation for every 
-		residue contained in the pdb file. 
+		a string containing the corresponding annotation for every
+		residue contained in the pdb file.
 		Annotation can be: H, B, E, G, I, T, S, P, " "
 		with:
 			H: alpha helix
@@ -47,8 +47,8 @@ def prossAnnot(pdb):
 	ARGUMENT:
 		pdb: the name of the pdb file.
 	RETURNS:
-		a string containing the corresponding annotation for every 
-		residue contained in the pdb file. 
+		a string containing the corresponding annotation for every
+		residue contained in the pdb file.
 		Annotation can be: H, E, T, P, -
 		with:
 		E: beta sheet
@@ -76,7 +76,7 @@ def prossAnnot(pdb):
 
 
 if __name__ == '__main__':
-	
+
 	# error management:
 	if len(sys.argv) != 2:
 		sys.exit("ERROR: one argument is needed (pdb file)")
