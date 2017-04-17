@@ -1,6 +1,6 @@
 
 #----------
-# Setup DSSP : 
+# Setup DSSP :
 
 ./tools/DSSP/DsspCompileCC
 
