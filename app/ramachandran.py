@@ -79,8 +79,8 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         psi = list(psi)
         # do not take first and last beacause of the None that are not
         # biologicaly relevant:
-        phi = phi[1:-2]
-        psi = psi[1:-2]
+        phi = phi[1:-1]
+        psi = psi[1:-1]
 
         # if a value equal None this point should not be in the plot
         for i in range(len(phi)):
@@ -144,15 +144,16 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         # Creates a figure
         fig = plt.gcf()
         # Changes figure size
-        fig.set_size_inches(10.0, 10.0)
+        fig.set_size_inches(4.5, 4.5)
         # Saves figures
 
         if not os.path.exists('temp'):
             os.mkdir('temp')
 
-        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=300)
+        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=200)
         path.append('temp/' + pdb_id + '_' + method.method + '.png')
 
+    print(path)
     return path
 
 

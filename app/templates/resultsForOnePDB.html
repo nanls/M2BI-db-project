@@ -12,10 +12,17 @@ SEQ      {{ PDB.seq }}
 {{ anno.method.ljust(9) }}{{ anno.result }}
 {% endfor %}
         </pre>
+        <pre>
+            <figure>
+                {% for path in ramap%}
+                    {{path}}
+                    <img src="{{url_for('get_file', path=path)}}">   
+                {% endfor %}
+            </figure>
+        </pre>
+    <!--{% for path in ramapaths%}-->
+            <!--<img src="{{url_for('get_file', path=path)}}">-->
+    <!--{% endfor %}-->
     </div>
-    {% for path in ramapaths%}
-        <figure>
-            <img src="{{url_for('get_file', path=path)}}">
-        </figure>
-    {% endfor %}
+    
 {% endblock %}
