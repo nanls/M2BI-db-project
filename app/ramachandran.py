@@ -75,9 +75,12 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         angles = db.session.query(model.Angle).\
             filter(model.Angle.pdb_id == pdb_id)
         phi, psi = zip(*[(angle.phi, angle.psi) for angle in angles.all()])
-        phi = phi[1:len(phi)-1]
-        psi = psi[1:len(psi)-1]
-
+        print (phi, psi)
+        # do not take first and last beacause of the None that are not
+        # biologicaly relevant:
+        phi = phi[1:-2]
+        psi = psi[1:-2]
+        print (phi, psi)
         if unit == "degree":
             phi = np.rad2deg(phi)
             psi = np.rad2deg(psi)
