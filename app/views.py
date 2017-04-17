@@ -74,7 +74,16 @@ def positionsPrinter(length):
 
 @app.route("/results/<string:PDBid>/<string:unit>")
 def resultsForOnePDB(PDBid, unit):
-    """Define the detailed results route."""
+    """Define the detailed results route.
+
+    Arguments
+    ---------
+    PDBid : string
+        id of a PDB in the dadabase
+    unint : string ('degree' or 'radian')
+        the unit in which the result have to be computed
+
+    """
     pdb = model.PDBFile.query.get(PDBid)
     # boundaries = model.Chain.query.get(PDBid)
     pos = positionsPrinter(len(pdb.seq))
@@ -96,7 +105,14 @@ def resultsForOnePDB(PDBid, unit):
 
 @app.route("/<path:path>")
 def get_file(path):
-    """Serve file at the given path."""
+    """Serve file at the given path.
+
+    Arguments
+    ---------
+    path : string
+        the path where the file is.
+        the top level dir is the one of the appliation
+    """
     print (path)
     return flask.send_file(path)
 
