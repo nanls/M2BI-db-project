@@ -23,12 +23,12 @@ def upload():
     if form.validate_on_submit():
 
         # check if the file already exist in the db
-        check_pdb = db.session.query(model.PDBFile).\
-            filter(model.PDBFile.id == form.pdb_file.data.filename[0:4])
-        check_bool = db.session.query(check_pdb.exists()).scalar()
-
-        # insert data contains in pdb into db :
-        if not check_bool:
+        # try to get by PK and receive None if it does not exist :
+        PDBid = form.pdb_file.data.filename.split('.')[0][-4:]
+        # ex : filename = pdb1234.pdb
+        #         PDBid = 1234
+        if not model.PDBFile.query.get(PDBid):
+            # insert data contains in pdb into db :
             filename = pdb_set.save(storage=form.pdb_file.data)
             # The uploaded file to save
 
@@ -87,21 +87,12 @@ def resultsForOnePDB(PDBid, unit):
     pdb = model.PDBFile.query.get(PDBid)
     # boundaries = model.Chain.query.get(PDBid)
     pos = positionsPrinter(len(pdb.seq))
-    # Get the phi and psi angles and compute the Ramachandran map
-    angles_phi, angles_psi = zip(*[ (angle.phi, angle.psi) for angle in pdb.angles.all()])
-    # unzip list of tuple of (phi ,psi) for each angle
-    print (angles_phi, angles_psi)
-
-    path = ramachandran.compute_ramachandran_map(
-        pdb.id, (angles_phi, angles_psi), unit
-    )
-    print(path)
-
+    paths = ramachandran.compute_ramachandran_map(pdb, unit)
+    print(paths)
     return flask.render_template(
         'resultsForOnePDB.html',
-        ramap=path, PDB=pdb, positions=pos
+        ramap=paths, PDB=pdb, positions=pos
     )
-
 
 @app.route("/<path:path>")
 def get_file(path):
