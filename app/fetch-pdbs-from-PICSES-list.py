@@ -33,7 +33,7 @@ def is_valid_file(parser, arg):
 
 
 parser = ArgumentParser(description="fetch PDBs files using a PICSES list")
-parser.add_argument("-l", 
+parser.add_argument("-l",
     dest="filename", required=True,
     help="""input file PDB list. The first line is a header.
     Then, for each line, the fourth characters are PDB ids.""",
@@ -52,14 +52,12 @@ with args.filename as f :
         pdb_id = line[:4]
         print (pdb_id)
         try :
-            # try retrieving the file the normal way : 
+            # try retrieving the file the normal way :
             pdbl.retrieve_pdb_file(pdb_id, pdir = 'data')
         except IOError:
-            try : 
-                # try retrieving the file as obsolete : 
+            try :
+                # try retrieving the file as obsolete :
                 pdbl.retrieve_pdb_file(pdb_id, pdir = 'data', obsolete = True)
             except IOError:
                 # the file couldn't be fetched at all :
                 print("the file couldn't be fetched at all.")
-                 
-
