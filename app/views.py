@@ -27,7 +27,9 @@ def upload():
         PDBid = form.pdb_file.data.filename.split('.')[0][-4:]
         # ex : filename = pdb1234.pdb
         #         PDBid = 1234
-        if not model.PDBFile.query.get(PDBid):
+
+        current_pdb = model.PDBFile.query.get(PDBid)
+        if not current_pdb:
             # insert data contains in pdb into db :
             filename = pdb_set.save(storage=form.pdb_file.data)
             # The uploaded file to save
@@ -53,11 +55,16 @@ def upload():
             db.session.add(current_pdb)
             db.session.commit()
 
+            flask.flash("The pdb was added in the database")
+        else:
+            flask.flash("This pdb was already in the database")
+
         return flask.redirect(flask.url_for(
             'resultsForOnePDB',
             PDBid=current_pdb.id,
             unit=form.angle_unit.data
         ))
+
     return flask.render_template('upload.html', form=form)
 
 
@@ -144,14 +151,18 @@ def search_by_pdb_id():
         PDBid_list = idForm.PDBid.data.split()
         PDBfiles_list = [model.PDBFile.query.get(id) for id in PDBid_list if model.PDBFile.query.get(id) is not None]
         if not PDBfiles_list:
-            return 'no such pdb was founded, you can upload it'
+            flask.flash('No such pdb was founded, you can upload it here.')
+            return flask.redirect(flask.url_for('upload'))
+
         elif len(PDBfiles_list) == 1:
+            flask.flash("Only one pdb corresponds to you querry.")
             return flask.redirect(flask.url_for(
                 'resultsForOnePDB',
                 PDBid=PDBfiles_list[0].id,
                 unit='degree'
             ))
         else:
+            flask.flash("Several pdb correspond to your querry : ")
             colnames, data = searchable_tables(PDBfiles_list)
             return flask.render_template("resultsForSeveralPDB.html",colnames = colnames, rows = data )
     return flask.redirect(flask.url_for("search"), code=302)
@@ -213,14 +224,18 @@ def search_files():
         )).all()
         print (PDBfiles_list)
         if not PDBfiles_list:
-            return 'no such pdb was founded, you can upload it'
+            flask.flash('No such pdb was founded, you can upload it here.')
+            return flask.redirect(flask.url_for('upload'))
+
         elif len(PDBfiles_list) == 1:
+            flask.flash("Only one pdb corresponds to you querry.")
             return flask.redirect(flask.url_for(
                 'resultsForOnePDB',
                 PDBid=PDBfiles_list[0].id,
                 unit='degree'
             ))
         else:
+            flask.flash("Several pdb correspond to your querry : ")
             colnames, data = searchable_tables(PDBfiles_list)
             return flask.render_template("resultsForSeveralPDB.html",colnames = colnames,  rows = data )
 
@@ -260,14 +275,17 @@ def search_by_kw():
         print (PDBfiles_list)
 
         if not PDBfiles_list:
-            return 'no such pdb was founded, you can upload it'
+            flask.flash('No such pdb was founded, you can upload it here.')
+            return flask.redirect(flask.url_for('upload'))
         elif len(PDBfiles_list) == 1:
+            flask.flash("Only one pdb corresponds to you querry.")
             return flask.redirect(flask.url_for(
                 'resultsForOnePDB',
                 PDBid=PDBfiles_list[0].id,
                 unit='degree'
             ))
         else:
+            flask.flash("Several pdb correspond to your querry : ")
             colnames, data = searchable_tables(PDBfiles_list)
             return flask.render_template("resultsForSeveralPDB.html",colnames = colnames,  rows = data )
 
