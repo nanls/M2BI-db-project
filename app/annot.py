@@ -7,11 +7,16 @@ import sys
 
 
 def dsspAnnot(pdb):
-    """
-    Retrieves the annotation made by DSSPPII.
-    ARGUMENT:
-        pdb: the name of the pdb file.
-    RETURNS:
+    """Retrieve the annotation made by DSSPPII.
+
+    Parameters
+    ----------
+        pdb: string
+            the name of the pdb file.
+
+    Returns
+    -------
+    string :
         a string containing the corresponding annotation for every
         residue contained in the pdb file.
         Annotation can be: H, B, E, G, I, T, S, P, " "
@@ -42,11 +47,16 @@ def dsspAnnot(pdb):
 
 
 def prossAnnot(pdb):
-    """
-    Retrieves the annotation made by PROSS.
-    ARGUMENT:
-        pdb: the name of the pdb file.
-    RETURNS:
+    """Retrieve the annotation made by PROSS.
+
+    Parameters
+    ----------
+        pdb: string
+        the name of the pdb file.
+
+    Returns
+    -------
+    string :
         a string containing the corresponding annotation for every
         residue contained in the pdb file.
         Annotation can be: H, E, T, P, -
