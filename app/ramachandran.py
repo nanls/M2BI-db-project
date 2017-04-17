@@ -106,6 +106,8 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
             x_label_in = "Phi(deg)"
             y_label_in = "Psi(deg)"
             sns.lmplot('phi', 'psi', data=df, hue='color', fit_reg=False)
+            # Set the title
+            plt.title("Ramachandran map with " + method.method + " annotation")
             # Sets x axis limits
             plt.xlim(-180, 180)
             # Sets y axis limits
@@ -125,6 +127,8 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
             x_label_in = "Phi(rad)"
             y_label_in = "Psi(rad)"
             sns.lmplot('phi', 'psi', data=df, hue='color', fit_reg=False)
+            # Set the title
+            plt.title("Ramachandran map with " + method.method + "annotation")
             # Sets x axis limits
             plt.xlim(-3.14, 3.14)
             # Sets y axis limits
@@ -144,13 +148,13 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         # Creates a figure
         fig = plt.gcf()
         # Changes figure size
-        fig.set_size_inches(4.5, 4.5)
+        fig.set_size_inches(4.7, 4.7)
         # Saves figures
 
         if not os.path.exists('temp'):
             os.mkdir('temp')
 
-        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=200)
+        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=180)
         path.append('temp/' + pdb_id + '_' + method.method + '.png')
 
     print(path)

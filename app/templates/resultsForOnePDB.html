@@ -15,14 +15,13 @@ SEQ      {{ PDB.seq }}
         <pre>
             <figure>
                 {% for path in ramap%}
-                    {{path}}
                     <img src="{{url_for('get_file', path=path)}}">   
                 {% endfor %}
             </figure>
-        </pre>
     <!--{% for path in ramapaths%}-->
             <!--<img src="{{url_for('get_file', path=path)}}">-->
     <!--{% endfor %}-->
+        </pre>
     </div>
     
 {% endblock %}
