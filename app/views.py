@@ -23,12 +23,12 @@ def upload():
     if form.validate_on_submit():
 
         # check if the file already exist in the db
-        check_pdb = db.session.query(model.PDBFile).\
-            filter(model.PDBFile.id == form.pdb_file.data.filename[0:4])
-        check_bool = db.session.query(check_pdb.exists()).scalar()
-
-        # insert data contains in pdb into db :
-        if not check_bool:
+        # try to get by PK and receive None if it does not exist :
+        PDBid = form.pdb_file.data.filename.split('.')[0][-4:]
+        # ex : filename = pdb1234.pdb
+        #         PDBid = 1234
+        if not model.PDBFile.query.get(PDBid):
+            # insert data contains in pdb into db :
             filename = pdb_set.save(storage=form.pdb_file.data)
             # The uploaded file to save
 
@@ -88,6 +88,7 @@ def resultsForOnePDB(PDBid, unit):
     # boundaries = model.Chain.query.get(PDBid)
     pos = positionsPrinter(len(pdb.seq))
     ramapaths = ramachandran.compute_ramachandran_map(pdb.id, unit)
+
     return flask.render_template(
         'resultsForOnePDB.html',
         ramap=ramapaths, PDB=pdb, positions=pos
