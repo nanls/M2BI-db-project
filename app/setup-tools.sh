@@ -1,4 +1,6 @@
 
+mkdir temp
+
 # ----------
 # Setup DSSP :
 
