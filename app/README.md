@@ -36,9 +36,10 @@ This is a database for the analysis of polyproline helix structure.
 
 		$python setup-db.py
 
-6'. Initialize database using pdb in data dir : (TODO)
-
-		$python setup-db.py data/  
+6'. Or initialize database using pdb in data dir :
+		
+		$python fetch-pdbs-from-PICSES-list.py -l tools/cullpdb_pc90_res1.8_R0.25_d120106_chains8017
+		$python setup-db-from-data.py
 
 
 
