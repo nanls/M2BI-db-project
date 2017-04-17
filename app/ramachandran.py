@@ -75,12 +75,23 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         angles = db.session.query(model.Angle).\
             filter(model.Angle.pdb_id == pdb_id)
         phi, psi = zip(*[(angle.phi, angle.psi) for angle in angles.all()])
+        phi = list(phi)
+        psi = list(psi)
         phi = phi[1:len(phi)-1]
         psi = psi[1:len(psi)-1]
 
+        # if a value equal None this point sould not be in the plot
+        for i in range(len(phi)):
+            if not phi[i]:
+                phi[i] = 1000
+            if not psi[i]:
+                psi[i] = 1000
+
         if unit == "degree":
             phi = np.rad2deg(phi)
+            #phi = [phi[i] * 180 / np.pi for i in range(len(phi))]
             psi = np.rad2deg(psi)
+            #psi = [psi[i] * 180 / np.pi for i in range(len(psi))]
         # create a dataframe
         try:
             df = pd.DataFrame(dict(phi=phi, psi=psi, color=annotation))
