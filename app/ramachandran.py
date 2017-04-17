@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 u"""Ramachandran Module.
 
@@ -48,39 +48,33 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
 
     Arguments
     ---------
-    pdb_id : string 
+    pdb_id : string
         id of the pdb in the database
     unit : string -- default : "radian"
         the unit in which the ramap is computed
 
     Returns:
     --------
-    string : arary of string 
+    string : arary of string
         paths of Ramachandran maps that have been computed
 
     """
-    #color_ss = {'H': 'red', 'B': 'green', 'C': 'grey', 'P': 'blue'} 
     path = []
-    methods =  db.session.query(model.Annotation.method).group_by(model.Annotation.method).all()
+    methods = db.session.query(model.Annotation.method).\
+        group_by(model.Annotation.method).all()
     for method in methods:
         # get annotation
-        annotation = db.session.query(model.Annotation.result).filter(and_(model.Annotation.pdb_id==pdb_id,
-                                                                           model.Annotation.method==method.method)).scalar()
+        annotation = db.session.query(model.Annotation.result).\
+            filter(and_(model.Annotation.pdb_id == pdb_id,
+                   model.Annotation.method == method.method)).scalar()
         # transform a string in a list of char
         annotation = list(annotation[1:len(annotation)-1])
         print(annotation)
 
-
-    #    color = []
-    #    for i in range(1,len(annotation)-1):
-    #        try:
-    #            color.append(color_ss[annotation[i]])
-    #        except:
-    #            color.append('black')
-
         # get angles
-        angles = db.session.query(model.Angle).filter(model.Angle.pdb_id==pdb_id)
-        phi, psi = zip(*[ (angle.phi, angle.psi) for angle in angles.all()])
+        angles = db.session.query(model.Angle).\
+            filter(model.Angle.pdb_id == pdb_id)
+        phi, psi = zip(*[(angle.phi, angle.psi) for angle in angles.all()])
         phi = phi[1:len(phi)-1]
         psi = psi[1:len(psi)-1]
 
@@ -98,7 +92,6 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
             # conserve and convert radian angle to degree
             x_label_in = "Phi(deg)"
             y_label_in = "Psi(deg)"
-            #plt.plot(x, y, ".")
             sns.lmplot('phi', 'psi', data=df, hue='color', fit_reg=False)
             # Sets x axis limits
             plt.xlim(-180, 180)
@@ -118,7 +111,6 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         elif unit == "radian":
             x_label_in = "Phi(rad)"
             y_label_in = "Psi(rad)"
-            #plt.plot(x, y, ".")
             sns.lmplot('phi', 'psi', data=df, hue='color', fit_reg=False)
             # Sets x axis limits
             plt.xlim(-3.14, 3.14)
@@ -165,4 +157,3 @@ if __name__ == "__main__":
 
     path_map = compute_ramachandran_map(pdb_id, angle_unit)
     print(path_map)
-
