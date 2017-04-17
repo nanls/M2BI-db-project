@@ -5,7 +5,7 @@ from flask_uploads import configure_uploads, UploadSet
 app = Flask(__name__)
 app.config.from_object('config.DevelopmentConfig')
 
-pdb_set = UploadSet('pdb', ('pdb', 'ent') )
+pdb_set = UploadSet('pdb', ('pdb', 'ent'))
 configure_uploads(app, pdb_set)
 
 db = SQLAlchemy(app)

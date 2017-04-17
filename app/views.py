@@ -6,59 +6,64 @@ import ramachandran
 import annot
 import model
 from app import app, pdb_set, db
-from sqlalchemy import func
-import model
 from form import UploadForm, SearchByPDBidForm, SearchFilesForm, SearchByKeyWD
 from sqlalchemy import or_, and_, func
 
 
 @app.route("/")
 def index():
-    """
-    Define the basic route / and its corresponding request handler
-    """
+    """Define the basic route / and its corresponding request handler."""
     return flask.render_template('index.html')
 
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
-    """
-    Define the upload route
-    """
-    form  = UploadForm()
+    """"Define the upload route."""
+    form = UploadForm()
     if form.validate_on_submit():
 
         # check if the file already exist in the db
-        check_pdb = db.session.query(model.PDBFile).filter(model.PDBFile.id==form.pdb_file.data.filename[0:4])
+        check_pdb = db.session.query(model.PDBFile).\
+            filter(model.PDBFile.id == form.pdb_file.data.filename[0:4])
         check_bool = db.session.query(check_pdb.exists()).scalar()
 
         # insert data contains in pdb into db :
         if not check_bool:
-            filename = pdb_set.save(storage = form.pdb_file.data,) # The uploaded file to save
+            filename = pdb_set.save(storage=form.pdb_file.data)
+            # The uploaded file to save
 
             path = pdb_set.path(filename)
 
             # compute annotation
             current_pdb = model.PDBFile(path)
-            dssp_data = model.Annotation(pdb_id=current_pdb.id, method="dssp", result=annot.dsspAnnot(path))
+            dssp_data = model.Annotation(
+                pdb_id=current_pdb.id,
+                method="dssp",
+                result=annot.dsspAnnot(path)
+            )
             current_pdb.annotations.append(dssp_data)
-            pross_data = model.Annotation(pdb_id=current_pdb.id, method="pross", result=annot.prossAnnot(path))
+            pross_data = model.Annotation(
+                pdb_id=current_pdb.id,
+                method="pross",
+                result=annot.prossAnnot(path)
+            )
             current_pdb.annotations.append(pross_data)
 
-            #add all annotations into db
+            # Add all annotations into db
             db.session.add(current_pdb)
             db.session.commit()
 
         return "success"
-    return flask.render_template('upload.html', form = form)
+    return flask.render_template('upload.html', form=form)
 
 
 def positionsPrinter(length):
-    """
-    Create a string containing the position numbers in a way that they will be
-    aligned with the sequence.
-    ARGUMENT:
-        length of the sequence to consider.
+    """Get position numbers aligned with the sequence.
+
+    Parameters
+    -----------
+    length : int
+        length of the sequence that is considered.
     """
     numbers = range(10, length + 1, 10)
     pos = "{:<9d}".format(1)
@@ -66,40 +71,55 @@ def positionsPrinter(length):
         pos += "{:<10d}".format(number)
     return pos + "\n"
 
+
 @app.route("/results/<string:PDBid>/<string:unit>")
 def resultsForOnePDB(PDBid, unit):
-    """
-    Define the detailed results route
+    """Define the detailed results route.
+
+    Arguments
+    ---------
+    PDBid : string
+        id of a PDB in the dadabase
+    unint : string ('degree' or 'radian')
+        the unit in which the result have to be computed
+
     """
     pdb = model.PDBFile.query.get(PDBid)
-    #boundaries = model.Chain.query.get(PDBid)
+    # boundaries = model.Chain.query.get(PDBid)
     pos = positionsPrinter(len(pdb.seq))
     # Get the phi and psi angles and compute the Ramachandran map
-    angles_phi, angles_psi = zip(*[ (angle.phi, angle.psi) for angle in  pdb.angles.all()])
+    angles_phi, angles_psi = zip(*[ (angle.phi, angle.psi) for angle in pdb.angles.all()])
     # unzip list of tuple of (phi ,psi) for each angle
-    print ( angles_phi, angles_psi )
+    print (angles_phi, angles_psi)
 
-    path = ramachandran.compute_ramachandran_map(pdb.id, (angles_phi, angles_psi), unit)
+    path = ramachandran.compute_ramachandran_map(
+        pdb.id, (angles_phi, angles_psi), unit
+    )
     print(path)
 
-    return flask.render_template('resultsForOnePDB.html',
-        ramap = path,
-        PDB = pdb,
-        positions = pos )
+    return flask.render_template(
+        'resultsForOnePDB.html',
+        ramap=path, PDB=pdb, positions=pos
+    )
+
 
 @app.route("/<path:path>")
 def get_file(path):
-    """
-    Serve file at the given path
+    """Serve file at the given path.
+
+    Arguments
+    ---------
+    path : string
+        the path where the file is.
+        the top level dir is the one of the appliation
     """
     print (path)
-    return flask.send_file( path )
+    return flask.send_file(path)
+
 
 @app.route("/about")
 def about():
-    """
-    Define the about route
-    """
+    """Define the about route."""
     nb_pdbs = db.session.query(func.count(model.PDBFile.id)).scalar()
 
     # count the number of proline in the db
@@ -113,28 +133,31 @@ def about():
     # compute mean length of protein's sequence contains in the db
     mean_len = db.session.query(func.avg(func.length(model.PDBFile.seq))).scalar()
 
+    return flask.render_template(
+        'about.html',
+        num_pdb=nb_pdbs, num_P=num_P,
+        mean_resol=mean_resol, mean_len=mean_len
+    )
 
-    return flask.render_template('about.html', num_pdb = nb_pdbs,
-                                 num_P = num_P, mean_resol = mean_resol,
-                                 mean_len = mean_len)
 
-@app.route('/search_by_pdb_id', methods = ['POST'])
+@app.route('/search_by_pdb_id', methods=['POST'])
 def search_by_pdb_id():
     idForm = SearchByPDBidForm()
 
-    if idForm.validate_on_submit() :
+    if idForm.validate_on_submit():
         # Creates a list of PDB IDs for which a assignation is wanted
         PDBid_list = idForm.PDBid.data.split()
         PDBfiles_list = [model.PDBFile.query.get(id) for id in PDBid_list if model.PDBFile.query.get(id) is not None]
-        if not PDBfiles_list :
+        if not PDBfiles_list:
             return 'no such pdb was founded, you can upload it'
-        elif len(PDBfiles_list)== 1 :
+        elif len(PDBfiles_list) == 1:
             return 'there is one result'
         else:
             return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
 
-@app.route('/search_files', methods = ['POST'])
+
+@app.route('/search_files', methods=['POST'])
 def search_files():
     filesForm = SearchFilesForm()
 
@@ -144,23 +167,23 @@ def search_files():
         # or default values definitions
         if not filesForm.resMin.data:
             resMin = db.session.query(db.func.min(model.PDBFile.resolution)).scalar()
-        else :
+        else:
             resMin = filesForm.resMin.data
 
         if not filesForm.resMax.data:
             resMax = db.session.query(db.func.max(model.PDBFile.resolution)).scalar()
-        else :
+        else:
             resMax = filesForm.resMax.data
         print (resMin, resMax)
 
         if not filesForm.sizeMin.data:
             sizeMin = 15
-        else :
+        else:
             sizeMin = filesForm.sizeMin.data
 
         if not filesForm.sizeMax.data:
             sizeMax = 10000
-        else :
+        else:
             sizeMax = filesForm.sizeMax.data
         print (sizeMin, sizeMax)
 
@@ -173,16 +196,17 @@ def search_files():
             func.length(model.PDBFile.seq) <= sizeMax,
         )).all()
         print (PDBfiles_list)
-        if not PDBfiles_list :
+        if not PDBfiles_list:
             return 'no such pdb was founded, you can upload it'
-        elif len(PDBfiles_list)== 1 :
+        elif len(PDBfiles_list) == 1:
             return 'there is one result'
         else:
             return 'several result -> make searchable array'
 
     return flask.redirect(flask.url_for("search"), code=302)
 
-@app.route('/search_by_kw', methods = ['POST'])
+
+@app.route('/search_by_kw', methods=['POST'])
 def search_by_kw():
     keywdForm = SearchByKeyWD()
     if keywdForm.validate_on_submit():
@@ -191,11 +215,12 @@ def search_by_kw():
 
         keywds_list = keywd.split()
         # was extracted from header :
-        #keywords, name, head,  deposition_date,  release_date, structure_method
-        #resolution, structure_reference, journal_reference, author, compound
+        # keywords, name, head,  deposition_date,  release_date,
+        # structure_method, resolution, structure_reference, journal_reference,
+        # author, compound
 
         PDBfiles_list = []
-        for kw in keywds_list :
+        for kw in keywds_list:
             PDBfiles_list.extend(
                 model.PDBFile.query.filter(or_(
                     model.PDBFile.keywords.contains(kw),
@@ -213,20 +238,24 @@ def search_by_kw():
             )
         print (PDBfiles_list)
 
-        if not PDBfiles_list :
+        if not PDBfiles_list:
             return 'no such pdb was founded, you can upload it'
-        elif len(PDBfiles_list)== 1 :
+        elif len(PDBfiles_list) == 1:
             return 'there is one result'
         else:
             return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
 
-@app.route('/search', methods = ['GET'])
+
+@app.route('/search', methods=['GET'])
 def search():
-    """
-    Define the search route.
-    """
+    """Define the search route."""
     idForm = SearchByPDBidForm()
     filesForm = SearchFilesForm()
     keywdForm = SearchByKeyWD()
-    return flask.render_template('search.html', SearchByPDBidForm = idForm, SearchFilesForm = filesForm, SearchByKeyWDForm = keywdForm)
+    return flask.render_template(
+        'search.html',
+        SearchByPDBidForm=idForm,
+        SearchFilesForm=filesForm,
+        SearchByKeyWDForm=keywdForm
+    )

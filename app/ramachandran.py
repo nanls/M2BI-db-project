@@ -1,68 +1,61 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+u"""Ramachandran Module.
 
-######################################
-# DESCRIPTION
-######################################
-
-# Ramachandran Module
-# Coded by Jean-Charles Carvaillo
-# carvaillojeancharles@gmail.com
-# Master 2 Bioinformatics
-# Copyright 2017, Jean-Charles Carvaillo, All rights reserved.
+Coded by Jean-Charles Carvaillo
+carvaillojeancharles@gmail.com
+Master 2 Bioinformatics
+Copyright 2017, Jean-Charles Carvaillo, All rights reserved.
 
 ######################################
 # CITATION
 ######################################
 
-# Package Numpy:
-# Stéfan van der Walt, S. Chris Colbert and Gaël Varoquaux.
-# The NumPy Array: A Structure for Efficient Numerical Computation, Computing
-# in Science & Engineering, Vol. 13. (2011), pp. 22-30,
-# DOI:10.1109/MCSE.2011.37
+Package Numpy:
+Stéfan van der Walt, S. Chris Colbert and Gaël Varoquaux.
+The NumPy Array: A Structure for Efficient Numerical Computation, Computing
+in Science & Engineering, Vol. 13. (2011), pp. 22-30,
+DOI:10.1109/MCSE.2011.37
 
-# Package Matplotib:
-# J.D. Hunter. Matplotlib: A 2D Graphics Environment,
-# Computing in Science & Engineering, Vol. 9, No. 3. (2007), pp. 90-95
+Package Matplotib:
+J.D. Hunter. Matplotlib: A 2D Graphics Environment,
+Computing in Science & Engineering, Vol. 9, No. 3. (2007), pp. 90-95
 
-# Package Mdtraj:
-# Robert T. McGibbon, Kyle A. Beauchamp, Matthew P. Harrigan,
-# Christoph Klein, Jason M. Swails, Carlos X. Hernández,
-# Christian R. Schwantes, Lee-Ping Wang, Thomas J. Lane, Vijay S. Pande.
-# MDTraj: A Modern Open Library for the Analysis of Molecular Dynamics
-# Trajectories, Biophysical Journal, Vol. 109, No. 8. (2015), pp. 1528-1532
-
+Package Mdtraj:
+Robert T. McGibbon, Kyle A. Beauchamp, Matthew P. Harrigan,
+Christoph Klein, Jason M. Swails, Carlos X. Hernández,
+Christian R. Schwantes, Lee-Ping Wang, Thomas J. Lane, Vijay S. Pande.
+MDTraj: A Modern Open Library for the Analysis of Molecular Dynamics
+Trajectories, Biophysical Journal, Vol. 109, No. 8. (2015), pp. 1528-1532
+"""
 
 ######################################
 # IMPORT
 ######################################
-
-import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import mdtraj as md
 import os
 import sys
 
+
 ######################################
 # FUNCTION
 ######################################
-
-
 def compute_phi_psi_angles(pdb_file):
-    """Method to compute phi and psi angles of a pdb file in an given
-        unit (radian).
+    """Compute phi and psi angles of a pdb file in an given unit (radian).
 
-    Arguments:
-        pdb_file: path of the pdb file
+    Parameters
+    ----------
+    pdb_file: string
+        path of the pdb file
 
-    Returns:
-        phi_angles (numpy.ndarray): array which contains all phi angles
+    Returns
+    -------
+    phi_angles : numpy.ndarray
+        array which contains all phi angles
         (numpy.float32).
-        psi_angles (numpy.ndarray): array which contains all psi angles
+    psi_angles : numpy.ndarray
+        array which contains all psi angles
         (numpy.float32).
-        phi_angles and psi angles are return in a tuple.
-
     """
     pdb = md.load_pdb(pdb_file)
     phi_angles = md.compute_phi(pdb)
@@ -78,20 +71,26 @@ def compute_phi_psi_angles(pdb_file):
 
 
 def compute_ramachandran_map(pdb_id, angles, unit="radian"):
-    """Method to generate a ramachandran map with a given unit scale
-        (radian or degree).
+    """Generate a ramachandran map with a given unit scale (radian or degree).
 
-        Arguments:
-            pdb_id : id of the pdb in the database
-            angles: tuple which contains
-            phi_angles (numpy.ndarray): array which contains all phi angles
+    Parameters
+    ----------
+    pdb_id : string
+        id of the pdb in the database
+    angles: tuple which contains :
+        phi_angles (numpy.ndarray):
+            array which contains all phi angles
             (numpy.float32).
-            psi_angles (numpy.ndarray): array which contains all psi angles
+        psi_angles (numpy.ndarray):
+            array which contains all psi angles
             (numpy.float32).
-            unit: unit of degree for phi and psi angles (degree or radian)
+    unit: string -- default : "radian"
+        unit of degree for phi and psi angles (degree or radian)
 
-        Returns:
-            path of Ramachandran map computed
+    Returns:
+    --------
+    string :
+        path of Ramachandran map computed
 
     """
     x = angles[0]
@@ -150,7 +149,7 @@ def compute_ramachandran_map(pdb_id, angles, unit="radian"):
 
     return 'temp/' + pdb_id + '.png'
 
-  
+
 if __name__ == "__main__":
     pdb_file = sys.argv[1]
     if len(sys.argv) > 2:
@@ -170,5 +169,3 @@ if __name__ == "__main__":
     except:
         sys.exit("the specified file is not openable or not" +
                  " a pdb file or just not specified\n")
-
-   
