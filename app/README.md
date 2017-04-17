@@ -63,23 +63,18 @@ This is a database for the analysis of polyproline helix structure.
 
 		$pip install -r requirements.txt
 
-# if not already created
-# 4. Creation of the database
-	
-#		$python setup-db.py
-
-5. Run Python webserver
+4. Run Python webserver
 
 		$python __init__.py
 
-6. Open web browser at <http://127.0.0.1:5000/>
+5. Open web browser at <http://127.0.0.1:5000/>
 
-7. Test it
+6. Test it
 
-8. Kill web app
+7. Kill web app
 
 		$ctrl-c
 
-9. Quit virtualenv
+8. Quit virtualenv
 
 		$deactivate
