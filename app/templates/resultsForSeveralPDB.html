@@ -29,7 +29,7 @@
             {%for data in rows%}
                 <tr>
                     <td>
-                        <a  href="#">
+                        <a  href="{{url_for('resultsForOnePDB', PDBid = data[0], unit='degree')}}">
                             {{data[0]}} <span class="glyphicon glyphicon-eye-open"></span>
                         </a>
                     </td> <!-- PDB id -->
