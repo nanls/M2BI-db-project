@@ -1,0 +1,50 @@
+Pour lancer DSSPPII:
+
+    Avoir compilé DSSP
+    donc, dans DSSP/, faire: ./DsspCompileCC
+    Puis, modifier la ligne 38 de dssppII.pl pour mettre dans la variable my
+    $path_dssp le chemin absolu vers le programme dsspcmbi (contenu dans notre
+    cas dans le dossier DSSP et qui est le programme qui vient d'être compilé).
+    Ce programme n'enregistre pas les résultats dans un fichier mais affiche
+    l'output dans le terminal donc il faut rediriger le flux pour pouvoir parser.
+    L'output semble compliqué de prime abord mais en fait, les résultats sont
+    affichés à partir de la ligne commençant par "  #". Une seule colonne nous
+    intéresse dans les lignes qui suivent: ligne[16] ==> annotation DSSP
+    toujours en colonne 16 dans la ligne.
+    Cette colonne contient: H, B, E, G, I, T, S, P, avec:
+    H: hélice alpha
+    B: bridge (sous-unité d'un brin beta)
+    E: extended (brin beta ==> signifie qu'il est dans une succession de bridges)
+    G: hélice 3-10
+    I: hélice pi
+    T: turn (coude)
+    S: bend (région de grande courbure c-à-d, pour un résidu i, l'angle défini
+    par i-2, i et i+2 est >= 70°)
+    P: PPII, hélice de polyproline II
+    Pour lancer:
+    $perl DSSPPII/dssppII.pl nomDuPDB > temp.txt
+
+    accepte n'importe quel pdb, pas besoin qu'il contienne les H.
+
+
+
+Pour lancer PROSS:
+
+    Ce programme n'enregistre pas les résultats dans un fichier mais affiche
+    l'output dans le terminal donc il faut rediriger le flux pour pouvoir parser.
+    Output de la forme:
+    >1BTA SEQ
+    KKAVINGEQIRSISDLHQTLKKELALPEYYGENLDALWDCLTGWVEYPLVLEWRQFEQSKQLTENGAESVLQVFREAKAEGCDITIILS
+    >1BTA pross
+    -EEEEE------HHHHHHHHHHHH-P-TT----HHHHH-TTT--PP-------P-TTTTT------HHHHHHHHHHHHHH-P-------
+    Avec:
+    E: feuillet bêta
+    T: turn
+    H: hélice
+    P: polyproline
+    -: coil
+    Pour lancer:
+    ./PROSS/PROSS.py 1BTA.pdb > 1BTA.pross
+    ./PROSS/extract_PROSS2SEQ2D.pl 1BTA.pross > temp.txt
+
+    accepte tout pdb

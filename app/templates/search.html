@@ -1,0 +1,41 @@
+{% extends "skeleton.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    {% if SearchByPDBidForm.errors or SearchFilesForm.errors or  SearchByKeyWDForm.errors %}
+        <p class = "error"><strong>No file correspond to your request in the database.</strong>
+    {% endif %}
+    {% if SearchByPDBidForm.errors%}
+        <p class = "error"><strong>You can upload it in the database from the upload page.</strong>
+    {% endif %}
+
+
+    <h2> Search by pdb id </h2>
+    {% from "_formhelpers.html" import render_field %}
+    <form name = "SearchByPDBidForm" method = "POST" onsubmit = "" action = "{{url_for('search_by_pdb_id')}}" enctype = "multipart/form-data">
+        {{ render_field(SearchByPDBidForm.PDBid) }}
+        {{ SearchByPDBidForm.submit }}
+        {{ SearchByPDBidForm.hidden_tag() }}
+    </form>
+
+
+    <h2> Display pdb in database </h2>
+    <form name = "SearchFilesForm" method = "POST" onsubmit = "" action = "{{url_for('search_files')}}" enctype = "multipart/form-data">
+        {{ render_field(SearchFilesForm.resMin) }}
+        {{ render_field(SearchFilesForm.resMax) }}
+        {{ render_field(SearchFilesForm.sizeMin) }}
+        {{ render_field(SearchFilesForm.sizeMax) }}
+        {{ SearchFilesForm.submit }}
+        {{ SearchFilesForm.hidden_tag() }}
+    </form>
+
+
+    <h2> Search by keyword </h2>
+    <form name = "SearchByKeyWD" method = "POST" onsubmit = "" action = "{{url_for('search_by_kw')}}" enctype = "multipart/form-data">
+        {{ render_field(SearchByKeyWDForm.keywd) }}
+        {{ SearchByKeyWDForm.submit }}
+        {{ SearchByKeyWDForm.hidden_tag() }}
+    </form>
+
+{% endblock %}

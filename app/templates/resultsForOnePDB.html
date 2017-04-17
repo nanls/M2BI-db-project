@@ -1,0 +1,27 @@
+{% extends "skeleton.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+    <div id="results">
+        <pre>
+{{ PDB.id }} <a href="{{ 'http://www.rcsb.org/pdb/explore/explore.do?structureId='+PDB.id }}">[PDBsum]</a>
+POS      {{ positions }}
+SEQ      {{ PDB.seq }}
+{% for anno in PDB.annotations.all() %}
+{{ anno.method.ljust(9) }}{{ anno.result }}
+{% endfor %}
+        </pre>
+        <pre>
+            <figure>
+                {% for path in ramap%}
+                    <img src="{{url_for('get_file', path=path)}}">   
+                {% endfor %}
+            </figure>
+    <!--{% for path in ramapaths%}-->
+            <!--<img src="{{url_for('get_file', path=path)}}">-->
+    <!--{% endfor %}-->
+        </pre>
+    </div>
+    
+{% endblock %}
