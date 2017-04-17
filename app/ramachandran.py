@@ -1,44 +1,36 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+u"""Ramachandran Module.
 
-######################################
-# DESCRIPTION
-######################################
-
-# Ramachandran Module
-# Coded by Jean-Charles Carvaillo
-# carvaillojeancharles@gmail.com
-# Master 2 Bioinformatics
-# Copyright 2017, Jean-Charles Carvaillo, All rights reserved.
+Coded by Jean-Charles Carvaillo
+carvaillojeancharles@gmail.com
+Master 2 Bioinformatics
+Copyright 2017, Jean-Charles Carvaillo, All rights reserved.
 
 ######################################
 # CITATION
 ######################################
 
-# Package Numpy:
-# Stéfan van der Walt, S. Chris Colbert and Gaël Varoquaux.
-# The NumPy Array: A Structure for Efficient Numerical Computation, Computing
-# in Science & Engineering, Vol. 13. (2011), pp. 22-30,
-# DOI:10.1109/MCSE.2011.37
+Package Numpy:
+Stéfan van der Walt, S. Chris Colbert and Gaël Varoquaux.
+The NumPy Array: A Structure for Efficient Numerical Computation, Computing
+in Science & Engineering, Vol. 13. (2011), pp. 22-30,
+DOI:10.1109/MCSE.2011.37
 
-# Package Matplotib:
-# J.D. Hunter. Matplotlib: A 2D Graphics Environment,
-# Computing in Science & Engineering, Vol. 9, No. 3. (2007), pp. 90-95
+Package Matplotib:
+J.D. Hunter. Matplotlib: A 2D Graphics Environment,
+Computing in Science & Engineering, Vol. 9, No. 3. (2007), pp. 90-95
 
-# Package Mdtraj:
-# Robert T. McGibbon, Kyle A. Beauchamp, Matthew P. Harrigan,
-# Christoph Klein, Jason M. Swails, Carlos X. Hernández,
-# Christian R. Schwantes, Lee-Ping Wang, Thomas J. Lane, Vijay S. Pande.
-# MDTraj: A Modern Open Library for the Analysis of Molecular Dynamics
-# Trajectories, Biophysical Journal, Vol. 109, No. 8. (2015), pp. 1528-1532
-
+Package Mdtraj:
+Robert T. McGibbon, Kyle A. Beauchamp, Matthew P. Harrigan,
+Christoph Klein, Jason M. Swails, Carlos X. Hernández,
+Christian R. Schwantes, Lee-Ping Wang, Thomas J. Lane, Vijay S. Pande.
+MDTraj: A Modern Open Library for the Analysis of Molecular Dynamics
+Trajectories, Biophysical Journal, Vol. 109, No. 8. (2015), pp. 1528-1532
+"""
 
 ######################################
 # IMPORT
 ######################################
-
 from app import db
-import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import model
@@ -48,21 +40,26 @@ from sqlalchemy import or_, and_, func
 import seaborn as sns
 import sys
 
+
 ######################################
 # FUNCTION
 ######################################
 
-
 def compute_ramachandran_map(pdb_id, unit="radian"):
-    """Method to generate a ramachandran map with a given unit scale
+    """Generate a ramachandran map with a given unit scale
         (radian or degree).
 
-        Arguments:
-            pdb_id : id of the pdb in the database
-            angles: tuple which contains
+    Arguments
+    ---------
+    pdb_id : string 
+        id of the pdb in the database
+    unit : string -- default : "radian"
+        the unit in which the ramap is computed
 
-        Returns:
-            path of Ramachandran map computed
+    Returns:
+    --------
+    string : arary of string 
+        paths of Ramachandran maps that have been computed
 
     """
     #color_ss = {'H': 'red', 'B': 'green', 'C': 'grey', 'P': 'blue'} 
@@ -155,7 +152,7 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
 
     return path
 
-  
+
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         sys.exit("a pdb id should be specified")
@@ -167,5 +164,7 @@ if __name__ == "__main__":
                      " or 'radian'\n")
     else:
         angle_unit = "radian"
+
     path_map = compute_ramachandran_map(pdb_id, angle_unit)
     print(path_map)
+
