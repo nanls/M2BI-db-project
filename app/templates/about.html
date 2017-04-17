@@ -4,10 +4,27 @@
 
 
 {% block content %}
+<<<<<<< Updated upstream
     <p>
     	{{num_pdb}} PDB file(s) is/are in the db. There is/are {{num_P}} amino acid(s) annotate as Poliproline.
 
     </p>
+=======
+    {% if num_pdb == 1%}
+        <p>
+            {{num_pdb}} PDB file is in the db.
+        </p>
+    {% else %}
+            {{num_pdb}} PDB files are in the db.
+    {% endif %}
+    {% if num_P == 1%}
+        <p>
+            There is {{num_P}} amino acid annotate as Poliproline.
+        </p>
+    {% else %}
+            There are {{num_P}} amino acids annotate as Poliproline.
+    {% endif %}
+>>>>>>> Stashed changes
     <p>
     	The mean resolution in the db is {{mean_resol}}. The mean length of protein sequence in db is {{mean_len}}.
     </p>
