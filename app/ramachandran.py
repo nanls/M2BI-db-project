@@ -144,15 +144,16 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         # Creates a figure
         fig = plt.gcf()
         # Changes figure size
-        fig.set_size_inches(10.0, 10.0)
+        fig.set_size_inches(4.5, 4.5)
         # Saves figures
 
         if not os.path.exists('temp'):
             os.mkdir('temp')
 
-        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=300)
+        fig.savefig('temp/' + pdb_id + '_' + method.method + '.png', dpi=200)
         path.append('temp/' + pdb_id + '_' + method.method + '.png')
 
+    print(path)
     return path
 
 
