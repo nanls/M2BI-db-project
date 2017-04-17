@@ -1,3 +1,5 @@
+"""This module define classes with several available configuration for the app."""
+
 class Config(object):
 
     #-----
