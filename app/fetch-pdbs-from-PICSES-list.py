@@ -50,7 +50,7 @@ with args.filename as f:
         print (pdb_id)
         try:
             # try retrieving the file the normal way :
-            pdbl.retrieve_pdb_file(pdb_id, pdir='data')
+            pdbl.retrieve_pdb_file(pdb_id, pdir='data', file_format='pdb')
         except IOError:
             try:
                 # try retrieving the file as obsolete :
