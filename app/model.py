@@ -99,6 +99,10 @@ class PDBFile(db.Model):
         # The sequence of each polypeptide can then easily be obtained
         # from the Polypeptide objects :
         self.seq = ""
+        atom_idx = 0
+        start = 0
+        end = 0
+
         for pp, chain in zip(ppb.build_peptides(struct), struct.get_chains()):
             print (pp)
 
@@ -114,10 +118,14 @@ class PDBFile(db.Model):
             # - The hetero-flag
             # - *The sequence identifier in the chain*
             # - The insertion code,
-            start = pp[0].get_id()[1]
+            # start of the polypeptide : pp[0].get_id()[1]
+            #  end of the polypeptide : pp[-1].get_id()[1]
+            start = end + 1
             print (start)
-            end = pp[-1].get_id()[1]
+            end = start + len(seq)-1
             print (end)
+            # |-----------||-------------------|
+            # sA        sA sB                  eB
 
             self.chains.append(Chain(chain.id, self.id, start, end))
 
@@ -130,8 +138,9 @@ class PDBFile(db.Model):
             # - No psi for last residue
             print(angles)
 
-        for (atom_idx, (phi, psi)) in enumerate(angles):
-            self.angles.append(Angle(self.id, atom_idx, phi, psi))
+            for phi, psi in angles:
+                atom_idx += 1
+                self.angles.append(Angle(self.id, atom_idx, phi, psi))
 
 
 class Chain(db.Model):
