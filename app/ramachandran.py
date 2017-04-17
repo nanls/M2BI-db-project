@@ -65,8 +65,8 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
     for method in methods:
         # get annotation
         annotation = db.session.query(model.Annotation.result).filter(and_(model.Annotation.pdb_id==pdb_id,
-                                                                           model.Annotation.method==method.method))
-        annotation = annotation.scalar()
+                                                                           model.Annotation.method==method.method)).scalar()
+        # transform a string in a list of char
         annotation = list(annotation[1:len(annotation)-1])
         print(annotation)
 
@@ -80,8 +80,9 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
 
         # get angles
         angles = db.session.query(model.Angle).filter(model.Angle.pdb_id==pdb_id)
-        phi = [angles[i].phi for i in range(1,len(angles.all())-1)]
-        psi = [angles[i].psi for i in range(1,len(angles.all())-1)]
+        phi, psi = zip(*[ (angle.phi, angle.psi) for angle in angles.all()])
+        phi = phi[1:len(phi)-1]
+        psi = psi[1:len(psi)-1]
 
         if unit == "degree":
             phi = np.rad2deg(phi)
