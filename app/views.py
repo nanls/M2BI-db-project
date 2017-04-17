@@ -152,8 +152,25 @@ def search_by_pdb_id():
                 unit='degree'
             ))
         else:
-            return 'several result -> make searchable array'
+            colnames, data = searchable_tables(PDBfiles_list)
+            return flask.render_template("resultsForSeveralPDB.html",colnames = colnames, rows = data )
     return flask.redirect(flask.url_for("search"), code=302)
+
+def searchable_tables(PDBfiles_list) :
+    """
+    """
+    data = []
+    for PDB in PDBfiles_list :
+        row = [
+            PDB.id,
+            PDB.head,
+            len(PDB.seq),
+            PDB.resolution
+        ]
+        data.append(row)
+    print (data)
+    colnames  = ['PDB', 'Title', 'Length', 'Resolution']
+    return colnames, data
 
 
 @app.route('/search_files', methods=['POST'])
@@ -204,7 +221,8 @@ def search_files():
                 unit='degree'
             ))
         else:
-            return 'several result -> make searchable array'
+            colnames, data = searchable_tables(PDBfiles_list)
+            return flask.render_template("resultsForSeveralPDB.html",colnames = colnames,  rows = data )
 
     return flask.redirect(flask.url_for("search"), code=302)
 
@@ -250,7 +268,9 @@ def search_by_kw():
                 unit='degree'
             ))
         else:
-            return 'several result -> make searchable array'
+            colnames, data = searchable_tables(PDBfiles_list)
+            return flask.render_template("resultsForSeveralPDB.html",colnames = colnames,  rows = data )
+
     return flask.redirect(flask.url_for("search"), code=302)
 
 
