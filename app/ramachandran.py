@@ -77,16 +77,18 @@ def compute_ramachandran_map(pdb_id, unit="radian"):
         phi, psi = zip(*[(angle.phi, angle.psi) for angle in angles.all()])
         phi = list(phi)
         psi = list(psi)
-        phi = phi[1:len(phi)-1]
-        psi = psi[1:len(psi)-1]
+        # do not take first and last beacause of the None that are not
+        # biologicaly relevant:
+        phi = phi[1:-2]
+        psi = psi[1:-2]
 
-        # if a value equal None this point sould not be in the plot
+        # if a value equal None this point should not be in the plot
         for i in range(len(phi)):
             if not phi[i]:
                 phi[i] = 1000
             if not psi[i]:
                 psi[i] = 1000
-
+        
         if unit == "degree":
             phi = np.rad2deg(phi)
             #phi = [phi[i] * 180 / np.pi for i in range(len(phi))]
