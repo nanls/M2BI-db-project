@@ -31,18 +31,19 @@ def dsspAnnot(pdb):
             P: PPII
             " ": coil
     """
+    pdb_id = pdb[-8:-4]
     # example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
-    os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp/"+pdb[-8:-4]+".dssp")
+    os.system("perl tools/DSSPPII/dssppII.pl "+pdb+" > temp/"+pdb_id+".dssp")
     flag = 0
     annot = ""
-    with open("temp/"+pdb[-8:-4]+".dssp", "r") as filin:
+    with open("temp/"+pdb_id+".dssp", "r") as filin:
         for line in filin:
             if line[0:3] == "  #":
                 flag = 1
             elif flag == 1:
                 annot += line[16]
         print(annot)
-    os.system("rm temp/"+pdb[-8:-4]+".dssp")
+    os.system("rm temp/"+pdb_id+".dssp")
     return(annot)
 
 
@@ -67,21 +68,22 @@ def prossAnnot(pdb):
         P: polyproline
         -: coil
     """
+    pdb_id = pdb[-8:-4]
     # example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
     # .pross file is the PROSS.py output, .pross2 file is the extract_PROSSSEQ2D.pl output
-    os.system("tools/PROSS/PROSS.py "+pdb+" > temp/"+pdb[-8:-4]+".pross")
-    os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/"+pdb[-8:-4]+".pross > temp/"+pdb[-8:-4]+".pross2")
+    os.system("tools/PROSS/PROSS.py "+pdb+" > temp/"+pdb_id+".pross")
+    os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/"+pdb_id+".pross > temp/"+pdb_id+".pross2")
     flag = 0
     annot = ""
-    with open("temp/"+pdb[-8:-4]+".pross2", "r") as filin:
+    with open("temp/"+pdb_id+".pross2", "r") as filin:
         for line in filin:
             if line[0] == ">" and line[-7:-1] == " pross":
                 flag = 1
             elif flag == 1:
                 annot += line[:-1]
         print(annot)
-    os.system("rm temp/"+pdb[-8:-4]+".pross")
-    os.system("rm temp/"+pdb[-8:-4]+".pross2")
+    os.system("rm temp/"+pdb_id+".pross")
+    os.system("rm temp/"+pdb_id+".pross2")
     return(annot)
 
 
