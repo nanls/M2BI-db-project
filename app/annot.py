@@ -70,9 +70,11 @@ def prossAnnot(pdb):
     """
     pdb_id = pdb[-8:-4]
     # example: if pdb = 'doc/truc/4dmi.pdb' ==> pdb[-8:-4] = '4dmi'
-    # .pross file is the PROSS.py output, .pross2 file is the extract_PROSSSEQ2D.pl output
-    os.system("tools/PROSS/PROSS.py "+pdb+" > temp/"+pdb_id+".pross")
-    os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/"+pdb_id+".pross > temp/"+pdb_id+".pross2")
+    # .pross file is the PROSS.py output, .pross2 file is the
+    # extract_PROSSSEQ2D.pl output
+    os.system("tools/PROSS/PROSS.py " + pdb + " > temp/" + pdb_id + ".pross")
+    os.system("tools/PROSS/extract_PROSS2SEQ2D.pl temp/" + pdb_id +
+              ".pross > temp/" + pdb_id + ".pross2")
     flag = 0
     annot = ""
     with open("temp/"+pdb_id+".pross2", "r") as filin:
