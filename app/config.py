@@ -9,7 +9,7 @@ class Config(object):
     # configuration of Flask-Uploads
     TOP_LEVEL_DIR = '.'
     UPLOADED_PDB_DEST = TOP_LEVEL_DIR + '/up'
-    
+
     # configuration of Flask-SQLAlchemy
     # which db :
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data.db'
