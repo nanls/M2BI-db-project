@@ -146,7 +146,11 @@ def search_by_pdb_id():
         if not PDBfiles_list:
             return 'no such pdb was founded, you can upload it'
         elif len(PDBfiles_list) == 1:
-            return 'there is one result'
+            return flask.redirect(flask.url_for(
+                'resultsForOnePDB',
+                PDBid=PDBfiles_list[0].id,
+                unit='degree'
+            ))
         else:
             return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
@@ -194,7 +198,11 @@ def search_files():
         if not PDBfiles_list:
             return 'no such pdb was founded, you can upload it'
         elif len(PDBfiles_list) == 1:
-            return 'there is one result'
+            return flask.redirect(flask.url_for(
+                'resultsForOnePDB',
+                PDBid=PDBfiles_list[0].id,
+                unit='degree'
+            ))
         else:
             return 'several result -> make searchable array'
 
@@ -236,7 +244,11 @@ def search_by_kw():
         if not PDBfiles_list:
             return 'no such pdb was founded, you can upload it'
         elif len(PDBfiles_list) == 1:
-            return 'there is one result'
+            return flask.redirect(flask.url_for(
+                'resultsForOnePDB',
+                PDBid=PDBfiles_list[0].id,
+                unit='degree'
+            ))
         else:
             return 'several result -> make searchable array'
     return flask.redirect(flask.url_for("search"), code=302)
