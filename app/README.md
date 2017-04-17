@@ -25,12 +25,23 @@ This is a database for the analysis of polyproline helix structure.
 
 		$pip install -r requirements.txt
 
-5. Initialize database using pdb in the data dir
+5. Initialize database de novo : 
 /!\ this will delete previous database
 
 		$python setup-db.py
 
-6. Quit virtualenv
+5'. Initialize databaseusing pdb in data dir : (TODO)
+
+		$python setup-db.py data/  
+
+
+6. Setup the tools
+
+		$chmod u+x setup-tools.sh
+		$ ./setup-tools.sh
+
+
+7. Quit virtualenv
 
 		$deactivate
 
