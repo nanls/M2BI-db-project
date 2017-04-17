@@ -87,11 +87,10 @@ def resultsForOnePDB(PDBid, unit):
     pdb = model.PDBFile.query.get(PDBid)
     # boundaries = model.Chain.query.get(PDBid)
     pos = positionsPrinter(len(pdb.seq))
-    paths = ramachandran.compute_ramachandran_map(pdb, unit)
-    print(paths)
+    ramapaths = ramachandran.compute_ramachandran_map(pdb.id, unit)
     return flask.render_template(
         'resultsForOnePDB.html',
-        ramap=paths, PDB=pdb, positions=pos
+        ramap=ramapaths, PDB=pdb, positions=pos
     )
 
 @app.route("/<path:path>")
