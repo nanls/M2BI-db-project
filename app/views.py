@@ -53,7 +53,11 @@ def upload():
             db.session.add(current_pdb)
             db.session.commit()
 
-        return "success"
+        return flask.redirect(flask.url_for(
+            'resultsForOnePDB',
+            PDBid=current_pdb.id,
+            unit=form.angle_unit.data
+        ))
     return flask.render_template('upload.html', form=form)
 
 
