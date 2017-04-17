@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
 u"""Ramachandran Module.
 
 Coded by Jean-Charles Carvaillo
@@ -19,12 +22,6 @@ Package Matplotib:
 J.D. Hunter. Matplotlib: A 2D Graphics Environment,
 Computing in Science & Engineering, Vol. 9, No. 3. (2007), pp. 90-95
 
-Package Mdtraj:
-Robert T. McGibbon, Kyle A. Beauchamp, Matthew P. Harrigan,
-Christoph Klein, Jason M. Swails, Carlos X. Hernández,
-Christian R. Schwantes, Lee-Ping Wang, Thomas J. Lane, Vijay S. Pande.
-MDTraj: A Modern Open Library for the Analysis of Molecular Dynamics
-Trajectories, Biophysical Journal, Vol. 109, No. 8. (2015), pp. 1528-1532
 """
 
 ######################################
