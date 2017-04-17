@@ -13,8 +13,9 @@ SEQ      {{ PDB.seq }}
 {% endfor %}
         </pre>
     </div>
-    <figure>
-        <img src="{{url_for('get_file', path=ramap)}}" title="Ramachandran map">
-        <figcaption>Ramachandran map</figcaption>
-    </figure>
+    {% for path in ramapaths%}
+        <figure>
+            <img src="{{url_for('get_file', path=path)}}">
+        </figure>
+    {% endfor %}
 {% endblock %}

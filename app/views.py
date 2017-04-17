@@ -87,21 +87,11 @@ def resultsForOnePDB(PDBid, unit):
     pdb = model.PDBFile.query.get(PDBid)
     # boundaries = model.Chain.query.get(PDBid)
     pos = positionsPrinter(len(pdb.seq))
-    # Get the phi and psi angles and compute the Ramachandran map
-    angles_phi, angles_psi = zip(*[ (angle.phi, angle.psi) for angle in pdb.angles.all()])
-    # unzip list of tuple of (phi ,psi) for each angle
-    print (angles_phi, angles_psi)
-
-    path = ramachandran.compute_ramachandran_map(
-        pdb.id, (angles_phi, angles_psi), unit
-    )
-    print(path)
-
+    ramapaths = ramachandran.compute_ramachandran_map(pdb.id, unit)
     return flask.render_template(
         'resultsForOnePDB.html',
-        ramap=path, PDB=pdb, positions=pos
+        ramap=ramapaths, PDB=pdb, positions=pos
     )
-
 
 @app.route("/<path:path>")
 def get_file(path):
